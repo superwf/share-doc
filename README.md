@@ -109,9 +109,11 @@ class MyDom extends HTMLElement {
 
 #### 🤖 html的坑
 
-html对属性是不区分大小写的，例如`setAttribute('myName', 'xxx')`，`myName`会被自动转化为`myname`
+* html对属性是不区分大小写的，例如`setAttribute('myName', 'xxx')`，`myName`会被自动转化为`myname`
 
 如果是多单词组成的长名称属性，需要用`-`来组合
+
+* 对于被setAttribute拦截的属性，没有调用`super.setAttribute`的情况下，默认的`attributeChangedCallback`方法是不会被调用的，需要手动触发
 
 #### 🤖 React的坑
 

@@ -33,9 +33,9 @@ class MyElementClass extends HTMLElement {
   /** 因为拦截了setAttribute
    * 所以当set observedAttributes里监控的属性时，这里不会运行
    * */
-  // attributeChangedCallback() {
-  //   this.render()
-  // }
+  attributeChangedCallback() {
+    this.render()
+  }
 
   render() {
     this.shadowRoot.innerHTML = Object.keys(this.data).map((k) => {

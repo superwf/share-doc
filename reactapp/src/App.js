@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { MyElement } from './myElement.js';
+import { MyElement } from './my-element.js';
 
 const data = {
   a: 1,
