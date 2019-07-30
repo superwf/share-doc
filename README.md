@@ -48,6 +48,8 @@ __解决方案当然是`Web Component`__
 
 `Web Component`的历史大约起始于2011年，其中的`shadow dom`标准从`v0`升级的到`v1`，经过了多年的浏览器大战，终于迎来了chrome掉打ie的大好局面 🎉 。只要不是需要兼容ie的项目，大都可以考虑使用。
 
+#### 优势
+
 此外还有如下几个优势，[摘自](https://www.cnblogs.com/ibufu/p/5641031.html)
 
 * 互操作性 — 组件超越框架而存在，可以在不同的技术栈中使用
@@ -104,6 +106,12 @@ class MyDom extends HTMLElement {
 }
 
 ```
+
+#### 🤖 html的坑
+
+html对属性是不区分大小写的，例如`setAttribute('myName', 'xxx')`，`myName`会被自动转化为`myname`
+
+如果是多单词组成的长名称属性，需要用`-`来组合
 
 #### 🤖 React的坑
 
@@ -201,20 +209,26 @@ import '@scf/ui'
 
 #### shadowDom内的dom操作
 
-自定义dom的内部内容，理论上可以使用任何技术。当结构非常简单时，使用原生dom编程生成节点，或使用web component示例中的模板都可以
+自定义dom的内部内容，理论上可以使用任何技术(目前React必须除外，原因如上)。当结构非常简单时，使用原生dom编程生成节点，或使用`web component`示例中的模板都可以
 
 但当编写复杂逻辑组件是，这种方法会使前端开发退化到jquery时代
 
-* 当前使用的方案是preact
+当前使用的方案是`Preact`
 
-  preact牺牲了很多react的兼容性与性能优化考虑来达到代码最小化
-
-* TODO 同时开发以vue为基础的web component开发方案
-
-* 调研`stencil`开发组件内部逻辑
+`Preact`是牺牲了很多`React`的兼容性与性能优化考虑来达到代码最小化简版`React`
 
 ### CSS
 
 * web component内部css完全封装在内部，不受外部影响
 
 * 当需要通过外层定制时，可以通过原生`css variable`特性来达到实时配置样式的效果，参考 [css 变量](http://www.ruanyifeng.com/blog/2017/05/css-variables.html)
+
+## 未来TODO
+
+* `shadow dom`内的部分调试不太友好，希望有类似`react-devtool`/`vue-devtool`的浏览器插件调试工具
+
+* 调研`stencil`开发组件内部逻辑
+
+* 以`vue`为基础的`web component`组件开发是可行的，目前只是缺少最佳实践
+
+* `web component`组件测试用例编写的最佳实践
