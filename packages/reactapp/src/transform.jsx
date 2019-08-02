@@ -9,6 +9,7 @@ export function transformToReact(TagName) {
         ref={(el) => {
           if (el) {
             forEach(otherProps, (v, k) => {
+              console.log(v, k)
               el.setAttribute(k, v)
             })
           }

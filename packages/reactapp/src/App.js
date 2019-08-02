@@ -1,7 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { MyElement } from 'myelement';
+import 'myelement';
+import { transformToReact } from './transform'
+
+export const MyElement = transformToReact('my-element')
 
 const data = {
   a: 1,

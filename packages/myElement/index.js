@@ -1,6 +1,4 @@
-import { transformToReact } from './transform'
-
-class MyElementClass extends HTMLElement {
+export class MyElement extends HTMLElement {
   static get observedAttributes() {
     return ['data']
   }
@@ -18,6 +16,7 @@ class MyElementClass extends HTMLElement {
   setAttribute(name, value) {
     if (MyElement.observedAttributes.includes(name)) {
       this.data = value
+      this.attributeChangedCallback()
     } else {
       super.setAttribute(name, value)
     }
@@ -49,6 +48,4 @@ class MyElementClass extends HTMLElement {
 
 const myTagName = 'my-element'
 
-customElements.define(myTagName, MyElementClass)
-
-export const MyElement = transformToReact(myTagName)
+customElements.define(myTagName, MyElement)
