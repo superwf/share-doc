@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import 'myelement';
+import 'my-element';
 import { transformToReact } from './transform'
 
 export const MyElement = transformToReact('my-element')

@@ -13,6 +13,6 @@
   "workspaces": [
     "packages/vueapp",
     "packages/reactapp",
-    "packages/myElement"
+    "packages/my-element"
   ]
 }
