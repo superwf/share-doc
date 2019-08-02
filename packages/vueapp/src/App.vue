@@ -8,7 +8,7 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-import './my-element'
+import 'myelement'
 
 export default {
   name: 'app',

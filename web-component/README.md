@@ -229,8 +229,8 @@ import '@scf/ui'
 
 * `shadow dom`内的部分调试不太友好，希望有类似`react-devtool`/`vue-devtool`的浏览器插件调试工具
 
-* 调研`stencil`开发组件内部逻辑
+* 调研`stencil`开发组件内部逻辑，目前进度感觉stencil是一套独立的开发编译环境，与`React`与`Vue`开发环境不能兼容
 
-* 以`vue`为基础的`web component`组件开发是可行的，目前只是缺少最佳实践
+* 以`vue`为基础的`web component`组件开发是可行的，目前正在开发中
 
 * `web component`组件测试用例编写的最佳实践
