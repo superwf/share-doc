@@ -52,9 +52,9 @@ scope, body和footer可选，type和subject必填。
 
 ### 提交校验工具
 
-* [commintlint](https://www.npmjs.com/package/commitlint) 检测每次提交的格式核心代码。
+* [commitlint](https://www.npmjs.com/package/commitlint) 检测每次提交的格式核心代码。
 
-* [commintlint-cli](https://www.npmjs.com/package/@commitlint/prompt-cli) commintlint的命令行工具。
+* [commitlint-cli](https://www.npmjs.com/package/@commitlint/prompt-cli) commitlint的命令行工具。
 
 * [@commitlint/config-conventional](https://www.npmjs.com/package/@commitlint/config-conventional) 一种验证规则集
   相似的规则集可见[conventional-changelog packages](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages)
@@ -68,7 +68,7 @@ yarn add -D commitlint @commitlint/prompt-cli @commitlint/config-conventional
 
 配置:
 
-`commintlint.config.js`，放到项目根目录
+`commitlint.config.js`，放到项目根目录
 
 ```javascript
 module.exports = { extends: ['@commitlint/config-conventional'] }
