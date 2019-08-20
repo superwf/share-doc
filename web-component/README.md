@@ -133,6 +133,8 @@ class MyDom extends HTMLElement {
 
     强制使用hack的方法解决该问题，会导致页面运行效率问题
 
+* 一个React与Vue环境的区别，React会先将dom创建放到dom树中，之后再对比属性调用setAttribute，而vue会先创建dom，调用setAttribute，然后将处理好的dom放到dom树中。没有经过实际数据对比，但个人感觉vue这种处理应该效率会更好一些。
+
 #### 解决方案
 
 * ~~重置javascript `+` 操作符，使加法操作返回对象~~ 经过调研发现，目前做不到，定制对象的`toString`或`valueOf`方法而改变的`+`行为最终的返回结果只能是字符串或数字
@@ -161,7 +163,7 @@ import '@scf/ui'
 ##### Vue代码
 
 ```javascript
-import '@scf/ui'
+  import '@scf/ui'
 
   <scf-layout
     :menus="menus"
@@ -215,7 +217,7 @@ import '@scf/ui'
 
 但当编写复杂逻辑组件是，这种方法会使前端开发退化到jquery时代
 
-当前使用的方案是`Preact`
+当前使用的方案是`Preact` / `Vue`
 
 `Preact`是牺牲了很多`React`的兼容性与性能优化考虑来达到代码最小化简版`React`
 
