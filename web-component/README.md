@@ -4,11 +4,11 @@
 
 ## 主流技术介绍
 
-* React，使用JSX语法，ts支持较好，虚拟DOM
+* `React`，使用JSX语法，ts支持较好，虚拟DOM
 
-* Vue，使用独有vue格式模板，利用es5的getter/setter实现响应式，虚拟DOM
+* `Vue`，使用独有vue格式模板，利用es5的getter/setter实现响应式，虚拟DOM
 
-* Web Component，浏览器原生支持，其内部的shadow dom从v0升级到v1，从2011年发布至今，已经进入了一个支持相对较为普遍的技术。（IE作为可忽略因素）
+* `Web Component`，浏览器原生支持，其内部的`shadow dom`从v0升级到v1，从2011年发布至今，已经进入了一个浏览器普遍支持的稳定期。（IE作为可忽略因素）
 
 ## 需要解决的跨技术栈问题
 
@@ -16,13 +16,13 @@
 
 ### 不同点
 
-* React/Vue组件层级无论运行环境与实现都完全不同，太多说不过来，blablabla
+* `React/Vue`组件层级无论运行环境与实现都完全不同，太多说不过来，blablabla
 
 ### 相同点
 
-* 这两种框架都使用props向下层组件传递任意结构的数据。
+* 这两种框架都使用`props`向下层组件传递任意结构的数据。
 
-* 在运行时，最终都使用virtual dom，将属性变更同步到真实dom上
+* 在运行时，最终都使用`virtual dom`，将属性变更同步到真实dom上
 
     ![](./props-flow.png)
 
@@ -60,7 +60,7 @@
 
   * 类属性`observedAttributes`: string[]配合，只有在该数组中指定的方法才会触发
 
-* 🐾 坑注意，由于经过v0与v1两个版本，v0已经废弃，网上充斥这很多老版本教程，看了白看，还会往歪路上带，必须看官方文档。
+* 🐾 坑注意，由于`shadow dom`经历了v0与v1两个版本，v0已经废弃，网上充斥这很多老版本教程，看了白看，还会往歪路上带，必须看官方最新文档。
 
 ![bridge](./react-with-vue.jpg)
 
@@ -102,9 +102,9 @@ Web Component是对原生DOM的自定义操作，api很少，阅读一下很快�
 
 于是有了如下中台项目的具体实现----[scf-ui](http://git.jd.com/scf/scf-ui/blob/master/packages/ui/src/components/scfElement.tsx)
 
-在实现web component自定义组件时，覆盖从父类继承的setAttribute方法进行拦截，可获取上级virtual dom传递的任意数据结构
+在实现`web component`自定义组件时，覆盖从父类继承的`setAttribute`方法进行拦截，可获取上级virtual dom传递的任意数据结构
 
-按这种思路，不限于React与Vue，只要是使用virtual dom来更新dom属性的框架都可以使用web component封装组件来获取数据
+按这种思路，不限于`React`与`Vue`，只要是使用`virtual dom`来更新dom属性的框架都可以使用`web component`封装组件来获取数据
 
 其关键步骤的最简化原理如下
 
@@ -254,6 +254,8 @@ import '@scf/ui'
 * `shadow dom`内的部分调试不太友好，希望能找到类似`react-devtool`/`vue-devtool`的浏览器插件调试工具
 
 * 调研`stencil`开发组件内部逻辑，目前进度感觉stencil是一套独立的开发编译环境，与`React`与`Vue`开发环境不能兼容
+
+* 调研[omi](https://tencent.github.io/omi/)，在`omi`的文档中发现上下级组件传递复杂数据时，使用的是将数据序列化（JSON.stringify）之后传递的方式。但使用omi开发内部逻辑是否合适有待调研
 
 * 以`vue`为基础的`web component`组件开发是可行的，目前正在开发中
 
