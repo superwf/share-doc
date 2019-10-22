@@ -212,7 +212,7 @@ yarn add standard-version
 npx standard-version
 ```
 
-* ⚠️  该工具将所有小于1.0.0的版本都视为非正式版本，可以理解为预发版本，或beta版。在小于1.0.0时所有BREAKING CHANGE都不会升主版本号，只会升级minor版本号
+* ⚠️  该工具将所有小于1.0.0的版本都视为非正式版本，可以理解为预发版本，或beta版。在小于1.0.0时所有BREAKING CHANGE都不会升主版本号，只会升级minor版本号。在小于1.0.0时所有feat都不会升minor版本号，只会升级patch版本号。
 
 * ⚠️  如果上次与本次发布之间没有可以升级的git tag，则会自动将patch版本号升级
 
