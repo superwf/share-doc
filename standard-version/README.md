@@ -32,7 +32,7 @@ scope, body和footer可选，type和subject必填。
 
   docs: 文档
 
-  style: 样式修改
+  style: 编码风格修改
 
   perf: 性能优化
 
@@ -248,7 +248,13 @@ npx standard-version
 
 * ⚠️  如果上次与本次发布之间没有可以升级的git tag，则会自动将patch版本号升级
 
-<video src="./videos/runStandardVersionVersionLess1.ogv" controls="controls"></video>
+<video src="./videos/runStandardVersionVersionLessThan1.ogv" controls="controls"></video>
+
+<video src="./videos/runStandardVersionVersionGreaterThan1.ogv" controls="controls"></video>
+
+自动生成新的CHANGELOG.md
+
+<video src="./videos/autoGenerateChangelog.ogv" controls="controls"></video>
 
 ### 与npm发布流程配合
 
@@ -267,23 +273,8 @@ npx standard-version
 
 其中 --no-verify表示由standard-version执行的git commit，需要跳过git hook的验证
 
-* 🐾 将standard-version的执行放到编译与测试等的后面，否则如果先生成了版本号，但测试或编译失败了，需要手动git回滚，删除CHANGELOG内容，去掉git tag等一系列错误; 或者干错忽略失败的版本号，修改后下次再发布
+* 🐾 将standard-version的执行放到编译与测试等的后面，否则如果先生成了版本号，但测试或编译失败了，需要手动git回滚，删除CHANGELOG内容，去掉git tag等一系列错误; 或者省事点，忽略失败的版本号，修改后下次再发布。
 
-### 与jdos发布流程配合
-
-与 [@jdos/cli](http://npm.m.jd.com/package/@jdos/cli) 配合使用
-
-```json
-{
-  "scripts": {
-    "release": "npx standard-version --no-verify",
-    "pubToJdos": "npm run release && npm run build && npx jdos"
-  }
-}
-```
-
-* 🐾 小提示：如果需要在unpkg这种cdn中应用，需要在`package.json`中添加`unpkg`或`browser`字段，如果都没有，会使用`main`字段，`main`也没有则会直接使用文件夹下的`index.js`，指向打包编译为`umd`格式的文件。umd格式文件识别顺序在`express-unpkg`包的源码中可查询。
-
-## Part 1: 总结以上所有工具之间的关系
+## Part 4: 总结以上所有工具之间的关系
 
 ![git release flow](./git-release-flow.png)
