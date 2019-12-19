@@ -60,11 +60,23 @@ scope, body和footer可选，type和subject必填。
   相似的规则集可见[conventional-changelog packages](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages)
 以下都以`conventionalcommits`为默认规则集合
 
+准备示例项目:
+
+```sh
+mkdir example
+cd example
+yarn init -y
+```
+
+<video src="./videos/initExample.ogv" controls="controls"></video>
+
 安装:
 
 ```sh
 yarn add -D commitlint @commitlint/prompt-cli @commitlint/config-conventional
 ```
+
+<video src="./videos/installCommitlint.ogv" controls="controls"></video>
 
 配置:
 
@@ -74,12 +86,16 @@ yarn add -D commitlint @commitlint/prompt-cli @commitlint/config-conventional
 module.exports = { extends: ['@commitlint/config-conventional'] }
 ```
 
+<video src="./videos/configCommitlint.ogv" controls="controls"></video>
+
 运行:
 安装并配置完成后，可以用命令实验，会出现规则校验失败的提示
 
 ```bash
 echo 'xxx: yyy' | npx commitlint
 ```
+
+<video src="./videos/testCommitlintAndFail.ogv" controls="controls"></video>
 
 ### 辅助工具[commitizen](https://www.npmjs.com/package/commitizen)
 
@@ -92,9 +108,13 @@ yarn add cz-conventional-changelog
 echo '{ "path": "cz-conventional-changelog" }' > .czrc
 ```
 
+<video src="./videos/installCommitizen.ogv" controls="controls"></video>
+
 安装完毕之后，即可使用`git-cz`命令代替`git commit`提交。
 
 经过了上面对提交文字的规范，项目的提交记录就已经达到了可以自动生成changelog的标准。
+
+<video src="./videos/runCommitizen.ogv" controls="controls"></video>
 
 ## Part 2: git hooks
 
@@ -128,6 +148,8 @@ yorkie配置，在package.json中
 yarn add husky
 ```
 
+<video src="./videos/installHusky.ogv" controls="controls"></video>
+
 husky配置，在package.json中
 
 ```javascript
@@ -138,6 +160,8 @@ husky配置，在package.json中
 },
 ```
 
+<video src="./videos/configHusky.ogv" controls="controls"></video>
+
 两个工具都不错，husky的错误提示信息可能更好一些
 
 🐾 必须先将项目纳入git管理，再安装husky/yorkie，否则不会安装git hooks
@@ -146,7 +170,9 @@ husky配置，在package.json中
 
 详细的hooks说明需要看官方文档，想不起来的时候，可以快速看一下当前项目里的`.git/hooks`文件夹，里面的文件就是当前本地git支持的hook，这些文件都是见名知意的。
 
-* 按照这种设计模式，我们还可以在其他的git生命周期中注入hook，例如pre-commit/pre-push自动运行测试等，不通过则阻止提交/推送。
+<video src="./videos/viewGithooksDir.ogv" controls="controls"></video>
+
+* 按照这种设计模式，我们还可以在其他的git生命周期中注入hook，例如pre-commit/pre-push自动运行测试等，测试不通过则阻止提交/推送。
 
 ## Part 3: CHANGELOG
 
@@ -162,11 +188,15 @@ husky配置，在package.json中
 yarn add conventional-changelog-cli conventional-changelog-conventionalcommits -D
 ```
 
+<video src="./videos/installConventionalChangelog.ogv" controls="controls"></video>
+
 执行:
 
 ```sh
 npx conventional-changelog -p conventional -i CHANGELOG.md -s -r 0
 ```
+
+<video src="./videos/runConventionalChangelog.ogv" controls="controls"></video>
 
 conventional-changelog有很多可调整的参数，具体参考[conventional-changelog文档](https://www.npmjs.com/package/conventional-changelog-cli)即可。
 
@@ -206,6 +236,8 @@ conventional-changelog有很多可调整的参数，具体参考[conventional-ch
 yarn add standard-version
 ```
 
+<video src="./videos/installStandardVersion.ogv" controls="controls"></video>
+
 执行:
 
 ```bash
@@ -215,6 +247,8 @@ npx standard-version
 * ⚠️  该工具将所有小于1.0.0的版本都视为非正式版本，可以理解为预发版本，或beta版。在小于1.0.0时所有BREAKING CHANGE都不会升主版本号，只会升级minor版本号。在小于1.0.0时所有feat都不会升minor版本号，只会升级patch版本号。
 
 * ⚠️  如果上次与本次发布之间没有可以升级的git tag，则会自动将patch版本号升级
+
+<video src="./videos/runStandardVersionVersionLess1.ogv" controls="controls"></video>
 
 ### 与npm发布流程配合
 

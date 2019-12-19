@@ -1,0 +1,24 @@
+{
+  "name": "example",
+  "version": "0.1.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/config-conventional": "^8.2.0",
+    "@commitlint/prompt-cli": "^8.2.0",
+    "commitlint": "^8.2.0",
+    "conventional-changelog-cli": "^2.0.31",
+    "conventional-changelog-conventionalcommits": "^4.2.3"
+  },
+  "dependencies": {
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.0.2",
+    "husky": "^3.1.0",
+    "standard-version": "^7.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "npx commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}
