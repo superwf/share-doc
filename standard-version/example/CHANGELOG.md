@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/superwf/share-doc/compare/v0.1.1...v2.0.0) (2019-12-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* version 1
+
+### Features
+
+* update to version 1 ([df24465](https://github.com/superwf/share-doc/commit/df24465c01384057492af7f02709f2f0c49a4e80))
+
 ### 0.1.1 (2019-12-19)
 
 
