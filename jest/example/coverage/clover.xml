@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1578897927726" clover="3.2.0">
+  <project timestamp="1578897927726" name="All files">
+    <metrics statements="98" coveredstatements="98" conditionals="30" coveredconditionals="30" methods="25" coveredmethods="25" elements="153" coveredelements="153" complexity="0" loc="98" ncloc="98" packages="6" files="11" classes="11"/>
+    <package name="src">
+      <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="5"/>
+      <file name="emitter.ts" path="/home/wangfan/nodes/share-doc/jest/example/src/emitter.ts">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+      </file>
+      <file name="logout.ts" path="/home/wangfan/nodes/share-doc/jest/example/src/logout.ts">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+      </file>
+      <file name="request.ts" path="/home/wangfan/nodes/share-doc/jest/example/src/request.ts">
+        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+        <line num="1" count="3" type="stmt"/>
+        <line num="3" count="3" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="7" count="6" type="stmt"/>
+        <line num="8" count="6" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="18" count="3" type="stmt"/>
+        <line num="19" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components">
+      <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+      <file name="SearchWithEvent.tsx" path="/home/wangfan/nodes/share-doc/jest/example/src/components/SearchWithEvent.tsx">
+        <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components.ComplexSearch">
+      <metrics statements="35" coveredstatements="35" conditionals="23" coveredconditionals="23" methods="6" coveredmethods="6"/>
+      <file name="index.tsx" path="/home/wangfan/nodes/share-doc/jest/example/src/components/ComplexSearch/index.tsx">
+        <metrics statements="10" coveredstatements="10" conditionals="3" coveredconditionals="3" methods="2" coveredmethods="2"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="11" count="1" type="cond" truecount="3" falsecount="0"/>
+        <line num="81" count="1" type="stmt"/>
+        <line num="83" count="1" type="stmt"/>
+        <line num="85" count="1" type="stmt"/>
+        <line num="86" count="1" type="stmt"/>
+        <line num="87" count="1" type="stmt"/>
+        <line num="109" count="1" type="stmt"/>
+      </file>
+      <file name="util.ts" path="/home/wangfan/nodes/share-doc/jest/example/src/components/ComplexSearch/util.ts">
+        <metrics statements="25" coveredstatements="25" conditionals="20" coveredconditionals="20" methods="4" coveredmethods="4"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="13" count="10" type="stmt"/>
+        <line num="14" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="18" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="21" count="6" type="stmt"/>
+        <line num="22" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="4" type="stmt"/>
+        <line num="24" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="27" count="3" type="stmt"/>
+        <line num="36" count="10" type="stmt"/>
+        <line num="37" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="38" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="41" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="44" count="6" type="stmt"/>
+        <line num="45" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="46" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="49" count="3" type="stmt"/>
+        <line num="50" count="3" type="stmt"/>
+        <line num="53" count="3" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components.User">
+      <metrics statements="24" coveredstatements="24" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="7"/>
+      <file name="List.tsx" path="/home/wangfan/nodes/share-doc/jest/example/src/components/User/List.tsx">
+        <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="30" count="3" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="38" count="7" type="stmt"/>
+        <line num="39" count="7" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+      </file>
+      <file name="Search.tsx" path="/home/wangfan/nodes/share-doc/jest/example/src/components/User/Search.tsx">
+        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.stores">
+      <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="user.ts" path="/home/wangfan/nodes/share-doc/jest/example/src/stores/user.ts">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="3" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="12" count="3" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.utils">
+      <metrics statements="7" coveredstatements="7" conditionals="7" coveredconditionals="7" methods="2" coveredmethods="2"/>
+      <file name="isEmail.ts" path="/home/wangfan/nodes/share-doc/jest/example/src/utils/isEmail.ts">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+      </file>
+      <file name="toFixed.ts" path="/home/wangfan/nodes/share-doc/jest/example/src/utils/toFixed.ts">
+        <metrics statements="5" coveredstatements="5" conditionals="7" coveredconditionals="7" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="7" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="8" type="cond" truecount="5" falsecount="0"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="11" count="5" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
