@@ -77,19 +77,19 @@ test('test', () => {
 
 ## 🐛误区
 
-🐛 测试是测试人员才需要写的。
+🐶 测试是测试人员才需要写的。
 
 > 💡 测试人员是黑盒测试，不管程序内部用的何种语言，如何实现，测试人员只测试表现出来的功能。只有详细了解代码每个内部功能模块的人才能编写对应的单元测试，即开发者自己编写。
 
-🐛 测试可以保证无bug。
+🐶  测试可以保证无bug。
 
 > 💡 测试可以减少bug，所有测试到的地方可以减少bug，但总会有编码估计不到的地方，这是就需要同时修正功能与添加测试用例。
 
-🐛 只要我每次页面上都点过了，测试也没啥用。
+🐶  只要我每次页面上都点过了，测试也没啥用。
 
 > 💡 第一次我认真点点，第二次我认真点点，...，第N次之后，我写的代码没问题，发布吧 []~(￣▽￣)~*
 
-🐛 我的代码里功能太多了，根本没法测试。
+🐶  我的代码里功能太多了，根本没法测试。
 
 > 💡 八成是代码拆分没设计好，测试不光是功能的辅助，也是功能的镜子。单元测试是重构的好基友。
 
@@ -111,21 +111,23 @@ test('test', () => {
 
 🍁 self promotion，有配套测试功能很酷，在写测试的过程中会发现很多不通过单元测试根本不会发觉的问题。
 
-## ⚒ 集成工具介绍
+## ⚒ 集成测试工具介绍
 
   * [jasmine](https://github.com/jasmine/jasmine-npm)
+
     > 自带runner与断言，但需要自己搭配istanbul统计测试覆盖率。
 
   * [jest](https://jestjs.io/)
+
     > 自带runner、断言、测试覆盖率(内置instanbul)统计。缺点，只能在nodejs中运行，需要引入jsdom模拟浏览器环境。
 
-  * 总结
+  * 💡 总结
 
-    * 轻量级的小库，推荐mocha + expect
+    * 💡 轻量级的小库，推荐mocha + expect
 
-    * 其他大多数情况推荐jest。
+    * 💡 其他大多数情况推荐jest。
 
-         > 如果是在传统的前端编程中，代码不需要转义直接在浏览器中运行，是没必要启用Jest的，mocha就很好。但现在的前端工程的复杂化，基本上所有的东西都需要工程上的转义支持。jest可以以最小的配置，与babel、typescript、instanbul、webpack的各种loader无痛结合。
+         > 如果是在传统的前端编程中，源码即最终代码，直接在浏览器中运行，是没必要启用Jest的，mocha就很好。但现在的前端工程的复杂化，基本上所有的东西都需要工程上的转义支持。jest可以使源码与babel、typescript、instanbul、webpack的各种loader最简单的无痛结合起来。
 
          > 如果按单一职责的设计原则，一个软件应该只干一件事，jest这个大集合是违反该原则的，因此我在最初也一直偏爱使用`mocha + expect`。但jest在工程上的设置实在是方便，基本上做到开箱即用，更高级的功能也方便配置。通过其[源代码](https://github.com/facebook/jest)可以看出，虽然对外jest是一个大集合，但在其自身的设计上，仍然是遵循单一职责的。
 
@@ -150,70 +152,71 @@ test('test', () => {
 
 👣 介绍`describe`、`it`、与`test`三个概念。
 
-  <details><summary>概念解释</summary>
+> 最基础的测试单元是`test`，`it`是`test`的别名，用哪个都可以。
 
-    最基础的测试单元是`test`，`it`是`test`的别名，用哪个都可以。
-
-    `describe`是测试功能的逻辑分组，如果只是一个测试，也可以不使用`describe`来包裹，`describe`另一个重要作用，就是利用js本身的特性，用函数来隔离作用域。时刻记住单元测试就是编码，这里就是js的世界，遵循js世界的规则。`describe`可以互相嵌套，而`test`与`it`不能。
+> `describe`是测试功能的逻辑分组，如果只是一个测试，也可以不使用`describe`来包裹，`describe`另一个重要作用，就是利用js本身的特性，用函数来隔离作用域。时刻记住单元测试就是编码，这里就是js的世界，遵循js世界的规则。`describe`可以互相嵌套，而`test`与`it`不能。
 
   </details>
 
 👣 以纯函数为例，同时编写功能与测试。
 
-  * 单独测试某个文件，添加`--watch 参数`。
-
-    [toFixed src](./example/src/utils/toFixed.ts)
-    [toFixed test](./example/__tests__/utils/toFixed.test.ts)
+> 单独测试某个文件，添加`--watch 参数`。
+>
+> 源码: [toFixed src](./example/src/utils/toFixed.ts)
+>
+> 测试: [toFixed test](./example/__tests__/utils/toFixed.test.ts)
 
 👣 编写异步测试
 
-  <details><summary>异步测试例子</summary>
-
-    [request src](./example/src/request.ts)
-    [request test](./example/__tests__/request.test.ts)
-
-  </details>
+> 源码: [request src](./example/src/request.ts)
+>
+> 测试: [request test](./example/__tests__/request.test.ts)
 
 👣 添加react，添加jsdom环境，配置jest，配置babel。
 
-  * react本身也有测试配套工具: `react-test-util`、`react-test-renderer`、`react-dom/test-utils`、`react-test-renderer/shallow`。
+  > react本身也有测试配套工具: `react-test-util`、`react-test-renderer`、`react-dom/test-utils`、`react-test-renderer/shallow`。
+ 
+  > 引入[enzyme](https://airbnb.io/enzyme/)，专为`react`组件测试而设计的语法糖，加速人工写react测试的速度。
 
-  * 引入[enzyme](https://airbnb.io/enzyme/)，就是语法糖，加速人工写react测试的速度。
-
-    [jest.config.js](./example/jest.config.js)
-    [jest/setup.js](./example/jest/setup.js)
+  > 配置: [jest.config.js](./example/jest.config.js)
+  >
+  > 启动环境: [jest/setup.js](./example/jest/setup.js)
 
 👣 编写一个简单react组件与测试用例，使用beforeEach、afterEach精简测试用例。
 
-    [Search src](./example/src/components/User/Search.ts)
-    [Search test](./example/__tests__/components/User/Search.test.ts)
+> 源码: [Search src](./example/src/components/User/Search.tsx)
+>
+> 测试: [Search test](./example/__tests__/components/User/Search.test.tsx)
 
 👣 重点测试各种可能导致内存泄漏的情况。
 
-  * 使用`shallow`代替`mount`，在不需要测试子组件时可加速测试运行速度。
+  > 使用`shallow`代替`mount`，在不需要测试子组件时可加速测试运行速度。
 
-  [SearchWithEvent src](./example/src/components/SearchWithEvent.ts)
-  [SearchWithEvent test](./example/__tests__/components/SearchWithEvent.test.ts)
+  > 源码: [SearchWithEvent src](./example/src/components/SearchWithEvent.tsx)
+  >
+  > 测试: [SearchWithEvent test](./example/__tests__/components/SearchWithEvent.test.tsx)
 
 👣 mock外部环境。
 
-  [logout src](./example/src/logout.ts)
-  [logout test](./example/__tests__/logout.test.ts)
+> 源码: [logout src](./example/src/logout.ts)
+>
+> 测试: [logout test](./example/__tests__/logout.test.ts)
 
   🐞 测试用例默认是串行运行的，上一个测试用例修改了外部环境之后的测试用例用的都会是dirty的全局环境，出现各种莫名其妙的错误。很多时候，单独运行一个测试可以通过，但是一整体运行就怎么也不能跑通而且很难找到错误原因。
 
-    大部分测试框架都是串行运行，只有所有测试功能都是纯函数的情况下才会开启并行运行模式。`jest`的运行默认有很多优化和缓存支持，默认速度就已经可以满足要求。
+  > 大部分测试框架都是串行运行，只有所有测试功能都是纯函数的情况下才会开启并行运行模式。`jest`的运行默认有很多优化和缓存支持，默认速度就已经可以满足要求。
 
 👣 生成测试覆盖率统计。
 
   🐞 问题：测试覆盖率达到100%就说明这个小功能已经测到头了吗？以email校验为例说明覆盖率百分之百仍然没有覆盖完整，需要在人工测到bug之后，不断晚上功能与测试用例。
 
-  [isEmail src](./example/src/utils/isEmail.ts)
-  [isEmail test](./example/__tests__/utils/isEmail.test.ts)
+  > 源码: [isEmail src](./example/src/utils/isEmail.ts)
+  >
+  > 测试: [isEmail test](./example/__tests__/utils/isEmail.test.ts)
 
 👣 配合typescript，详见`jest.config.js的transform`
 
-    在js时代，很多时候写一个有参数函数的单元测试，我都觉得应该写一下参数类型错误的判断，在运行时先判断类型是否正确，错误则抛出错误。在有了ts之后，这种校验交给ts即可。只有在接收外部数据作为参数的情况下才需要运行时校验类型。
+  > 在js时代，很多时候写一个有参数函数的单元测试，我都觉得应该写一下参数类型错误的判断，在运行时先判断类型是否正确，错误则抛出错误。在有了ts之后，这种校验交给ts即可。只有在接收外部数据作为参数的情况下才需要运行时校验类型。
 
   <details><summary>示例代码</summary>
 
@@ -230,8 +233,9 @@ test('test', () => {
 
 👣 引入mobx环境，模拟需要的store。
 
-  [mobx component src](./example/src/components/User/List.tsx)
-  [mobx component test](./example/__tests__/components/User/List.test.tsx)
+  > 源码: [mobx component src](./example/src/components/User/List.tsx)
+  >
+  > 测试: [mobx component test](./example/__tests__/components/User/List.test.tsx)
 
   <details><summary>注入store</summary>
 
@@ -241,22 +245,23 @@ test('test', () => {
 
 👣 将逻辑移出组件(因为ui组件会牵扯到dom与更多的外部环境)
 
-  * 将战火燃于国门之外---将所有可外置的逻辑都转移到组件(web组件，包含react、vue等前端组件)外部。
+  > 将战火燃于国门之外---将所有可外置的逻辑都转移到组件(web组件，包含react、vue等前端组件)外部。
 
-  [complex search src](./example/src/components/ComplexSearch)
-  [complex search test](./example/__tests__/components/ComplexSearch)
+  > [complex search src](./example/src/components/ComplexSearch)
+  >
+  > [complex search test](./example/__tests__/components/ComplexSearch)
 
 ## 🍀 最佳实践
 
 🍀 理论上每个测试用例中只测试一个功能点，但我经常将一系列相关的功能点放到一个用例中一起测试。当测试的功能点明显不同时应放到不同的用例中运行。
 
-    例如[isEmail test](./example/__tests__/utils/isEmail.test.ts)这种，将一系列成功和失败的用例放到一起我认为也是可以的。
+  > 例如[isEmail test](./example/__tests__/utils/isEmail.test.ts)这种，将一系列成功和失败的用例放到一起我认为也是可以的。
 
 🍀 将测试相关命令添加到`package.json`的`scripts`中，使用`npm test`，或`yarn test`执行测试。方便和其他npm或git工作流绑定在一起。比如使用`yarn coverage`一行命令查看测试覆盖率。
 
 🍀 在`src`与`__tests__`文件夹中添加相同的目录结构，使用相同的文件名映射源文件与测试文件。
 
-🍀 纯函数，测试和代码同步出。
+🍀 纯函数，测试和代码同步出。也有很多工具函数是在多处写了多次之后提取出来的，也可以在抽象提取时补齐单元测试。
 
 🍀 其他各种公共代码，在功能与代码拆分稳定后补全测试。
 
@@ -266,10 +271,11 @@ test('test', () => {
 
 🍀 遵循隔离原则。
 
-  <details><summary>第三方包功能基本是不需要测试的，要本着谁的包谁负责的态度。</summary>
+  <details><summary>第三方包库是不需要测试的，要本着谁的娃谁自己管的原则。</summary>
 
   ![](./docs/hammer.jpeg)
 
+  单元测试主要针对的是上图中第三行的的行为。
 
   比如使用一个antd的Button组件，按文档要求，只要把我的逻辑函数存放到`onClick`属性上就可以了，这也就是之前提到的，如果找到的第三方库没有配套的测试用例，用着是不踏实的。
 
@@ -281,7 +287,7 @@ test('test', () => {
 
   const MyButton = () => <Button onClick={myFunction} />
 
-  // 至于antd里的Button组件内部是如何运行，里面最终用的是什么dom结构，在这一层单元测试是不考虑的
+  // 至于antd里的Button组件内部是如何运行，里面最终用的是什么dom结构，在这一层单元测试是不需要考虑的
   expect(mount(<MyButton />)).find(Button).prop('onClick').toBe(myFunction)
   ```
 
@@ -295,9 +301,9 @@ test('test', () => {
 
 🍀 git工作流搭配(配置过程内容有些多，需要另开一个专题)。
 
-  * 本地钩子: 通过`husky`或`yorkie`添加本地git push钩子，推送时本地自动运行测试。
-
-  * gitlab钩子: 通过与gitlab pipeline结合，配置`gitlab-ci.yml`，并配置gitlab的runner。
+  > 本地钩子: 通过`husky`或`yorkie`添加本地git push钩子，推送时本地自动运行测试。
+  >
+  > gitlab钩子: 通过与gitlab pipeline结合，配置`gitlab-ci.yml`，并配置gitlab的runner。
 
 ## 🌲 技能树比喻
 
@@ -309,24 +315,30 @@ test('test', () => {
 
 </details>
 
-配合这张不是很准确但大体能反映关系的技能树图，中间最下面的是编程基础技能，左侧的分支可以比做测试技能，在升到高层时，这两项技能会互相影响，如果融合后可衍生高级技能---抽象、分层、重构、架构、工程等。当我们经过了几年的学习与工作，感觉到技能提升瓶颈，大概就是需要将一些时间投入到测试中的时候了。
+> 配合这张不是很准确但大体能反映关系的技能树图，中间最下面的是编程基础技能，左侧的分支可以比做测试技能。
+>
+> 在升到高层时，这两项技能会互相影响，如果融合后可衍生高级技能---抽象、分层、重构、架构、工程等。
+>
+> 当我们经过了几年的学习与工作，感觉到技能提升瓶颈，大概就是需要将一些时间投入到测试中的时候了。
 
-## 如何提升
+## 🌿 如何提升
 
-🍀 找几个自己常用的开源库，clone代码之后看看他们的测试用例，并运行体验结果。
+🌿 找几个自己常用的开源库，`git clone`代码之后看看他们的测试用例，并运行体验结果。
 
   > 例如：react、vue、redux、mobx、lodash。
 
-🍀 在一个`周期宽松`的项目中点亮我们的单元测试新技能。
+🌿 在一个**周期宽松**的项目中点亮我们的单元测试新技能。
 
-  > 这条通用经验---在每个新项目中只引入一个新概念，例如新框架，新流程，新工具。先从简单的纯函数入手，逐步添加测试用例。
+  > 这条是通用经验。在每个新项目中只引入一个新概念，例如新框架，新流程，新工具。在一个新项目中引入一个以上的新概念，好比步子跨的太大了一定会扯到蛋。
+  >
+  > 先从简单的纯函数入手，逐步培养兴趣。
 
-## 推荐阅读
+## 🎓 推荐阅读
 
-* 深入理解[jest](https://jestjs.io/docs/zh-Hans/getting-started)，有官方中文文档 []~(￣▽￣)~*
+📖 深入理解`jest`，通读[**官方中文文档**](https://jestjs.io/docs/zh-Hans/getting-started)。
 
-* 如果使用`enzyme`配合测试`react`，则通读[enzyme官方文档](https://airbnb.io/enzyme/)。也可根据自身判断，不使用`enzyme`而使用`react`提供的官方测试配套工具。vue官方就有测试[配套指南](https://cn.vuejs.org/v2/guide/unit-testing.html)，使用思想与react大同小异。
+📖 如果使用`enzyme`配合测试`react`，则通读[enzyme官方文档](https://airbnb.io/enzyme/)。也可根据自身判断，不使用`enzyme`而使用`react`提供的官方测试配套工具。vue官方就有测试[配套指南](https://cn.vuejs.org/v2/guide/unit-testing.html)，使用思想与react大同小异。
 
-* [《编写可测试的JavaScript代码》](https://item.jd.com/10357107991.html)
+📖 [《编写可测试的JavaScript代码》](https://item.jd.com/10357107991.html)
 
-* 其他还有一些经典的各种编程思想、设计模式一类的玄学书籍，对与提升代码的可测试性，都会有一定程度的加成提升。
+📖 其他还有一些经典的各种编程思想、设计模式一类的玄学书籍，对与提升代码的可测试性，都会有一定程度的加成提升。
