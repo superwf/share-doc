@@ -375,6 +375,13 @@ describe('page/Pricing', () => {
 
   </details>
 
+🍀 在单元测试环节，**[不]**发起实际接口请求。
+
+  > 如果用`fetch`，可以用[fetch-mock](https://github.com/wheresrhys/fetch-mock)模拟请求，或者干脆自己模拟一个请求函数，把`fixture`数据用`Promise.resolve(...)`返回即可。
+  >
+  > 如果用`axios`，有配套的[moxios](https://www.npmjs.com/package/moxios)来模拟返回请求数据。
+  > 其他的ajax库也会有对应的模拟方法，总之单元测试不需要也不应该发起实际的接口请求，无论该接口是远程还是本地模拟。
+
 🍀 组件按功能拆分精细化。
 
   > 传统的写法，一个页面就是一个组件，随着业务的日趋复杂，页面组件会变成一个个臃肿的庞然大物，动辄几千行。
