@@ -5,7 +5,7 @@
 
 ![](./docs/boss.jpg)
 
-本攻略以一张游戏截图开篇。请想象，之前的关卡一路紧身肉搏过关斩将，突然发现下一关要攻打一个飞行boss，但是自己的装备和技能点都已经分给了近身攻击。结果一定是掀桌子不玩了 (／‵Д′)／~ ╧╧
+本攻略以一张游戏截图开篇。请想象，之前的关卡一路近身肉搏过关斩将，突然发现下一关要攻打一个飞行boss，但是自己的装备和技能点都已经分给了近身攻击。结果一定是掀桌子不玩了 (／‵Д′)／~ ╧╧
 
 </details>
 
@@ -208,30 +208,21 @@ test('test', () => {
 
 👣 生成测试覆盖率统计。
 
+  > 命令 `npx jest --coverage`，之后可以在屏幕上看到一个简易的覆盖率统计。
+  >
+  > 运行之后，生成一个`coverage`文件夹，该文件夹内的`lcov-report`内的`index.html`文件可更方便查看覆盖率结果。
+  >
+  > 💡 提示: 该`coverage`文件夹只是查看结果，既不是源码也不是配置文件，不应放到git仓库中，应在`.gitignore`中添加排除。
+
   🚨 问题：测试覆盖率达到100%就说明这个小功能已经测到头了吗？以email校验为例说明覆盖率百分之百仍然没有覆盖完整，需要在人工测到bug之后，不断完善功能与测试用例。
 
   > 源码: [isEmail src](./example/src/utils/isEmail.ts)
   >
   > 测试: [isEmail test](./example/__tests__/utils/isEmail.test.ts)
 
-👣 配合typescript，详见`jest.config.js的transform`
+  > 我们在阅读各种开源项目源代码时，会看到这种注释，表明该处更改是为了修正`issue`提出的`bug`，在测试用例中也会找到与该`bug`相对应的测试用例。
 
-  > 在js时代，很多时候写一个有参数函数的单元测试，我都觉得应该写一下参数类型错误的判断，在运行时先判断类型是否正确，错误则抛出错误。在有了ts之后，这种校验交给ts即可。只有在接收外部数据作为参数的情况下才需要运行时校验类型。
-
-  <details><summary>示例代码</summary>
-
-  ```javascript
-  function transformUser(user) {
-    if (typeof user === 'object' && 'name' in user && 'age' in user) {
-      return ...
-    }
-    throw new Error('invalid user: ', user)
-  }
-  ```
-
-  </details>
-
-👣 引入mobx环境，模拟需要的store。
+👣 引入`mobx`环境，模拟需要的`store`。
 
   > 源码: [mobx component src](./example/src/components/User/List.tsx)
   >
@@ -240,14 +231,20 @@ test('test', () => {
   > 注入store
   >
   > 在mobx或redux环境中，通常都会使用最外层的`Provider`统一注入所有的`store`，但在每个组件中，通常只使用其中的一两个`store`，所以我们在测试的时候，只注入最低限度的依赖即可。同样的道理，也可用于其他需要模拟的麻烦的对象。
+  >
+  > 在`vue`环境中的`vuex`也是同样的道理，当测试的时候，只传入组建依赖的`module`即可。
 
-👣 将逻辑移出组件(高大上的叫法是: ui与逻辑分离)
+👣 将逻辑移出组件(高大上的叫法是: ui与逻辑分离)。
 
   > 将战火燃于国门之外---将所有可外置的逻辑都转移到组件(web组件，包含react、vue等前端组件)外部。
 
   > [complex search src](./example/src/components/ComplexSearch)
   >
   > [complex search test](./example/__tests__/components/ComplexSearch)
+  >
+  > 在一个大型的react或vue组件中，有很多方法都会依赖当前组件实例的`this`，因此感觉很难拆分，拆之后`this`不能访问了咋办呢？此时函数式编程思想可以有，关于函数式变成，后面会有推荐阅读。
+
+👣 简单的页面结构或数据结构测试，使用`snapshot`。
 
 ## 🍀 最佳实践
 
@@ -255,7 +252,7 @@ test('test', () => {
 
 🍀 理论上每个测试用例中只测试一个功能点，但我经常将一系列相关的功能点放到一个用例中一起测试。当测试的功能点明显不同时应放到不同的用例中运行。
 
-  > 例如[isEmail test](./example/__tests__/utils/isEmail.test.ts)这种，将一系列成功和失败的用例放到一起我认为也是可以的。
+  > 例如[isEmail test](./example/__tests__/utils/isEmail.test.ts)这种，将一系列简单的、只测试一个功能点，且非常类似的断言，放到一个用例里运行我认为也是可以的。
 
 🍀 在某一个测试用例上遇到麻烦时，通过添加`only`，使jest仅运行该用例，减少每次的运行时间，在测试完成后记得去掉`only`。`only`在`describe`和`it`上都可以加，也可以加多个。与之相对的是`skip`，添加后可以在运行时跳过相关测试。
 
@@ -271,11 +268,52 @@ test('test', () => {
 
   </details>
 
+🍀 各种变量类型或数据都可根据需要`export`出来，测试中也需要避免硬编码。
+
+  <details><summary>例如之前的`toFixed`例子</summary>
+
+  如果`PLACEHOLDER`没有导出，则测试中测试该功能时，不可避免要硬编码，写成
+
+  ```javascript
+    expect(toFixed()).toBe('--')
+  ```
+
+  这样，如果占位符的展示方式变化，我们的测试用例就会失败，将该变量`export`出来给测试用例调用更好。
+
+  如果是在实现一个公共的第三方库，应遵守软件设计的`最小开放原则`(也叫最少知道原则)，整体对外暴露可供调用的接口应尽量少，内部细节要封闭。但在内部的各个模块之间，模块和测试之间，这种比较多的暴露的接口和数据的行为是没问题的。
+
+  </details>
+
+🍀 配合typescript，减少类型校验代码，`jest`配置参考`jest.config.js的transform`
+
+  > 需要添加`jest`类型支持，安装`@types/jest`包，即可在测试文件中添加相关的代码校验与补全。
+  >
+  > 在js时代，很多时候写一个有参数函数的单元测试，我都觉得应该写一下参数类型错误的判断，在运行时先判断类型是否正确，错误则抛出错误。
+
+  <details><summary>例如之前的isEmail的例子</summary>
+
+  在js代码中需要在运行时校验类型吗？
+
+  ```javascript
+    export const isEmail = (input) => {
+      if (typeof input !== 'string') {
+        throw new Error('请输入string')
+      }
+      return /^[a-z]+@[a-z]+\.[a-z]+$/i.test(input)
+    }
+  ```
+
+  在ts环境中，这种校验在开发时，就已经避免了，是不必要的。
+
+  只有在接收外部数据作为参数的情况下才需要运行时校验类型。例如接收后端接口数据，但该数据类型可能不确定时，才需要添加运行时校验类型的逻辑。
+
+  </details>
+
 🍀 在编写测试文件时可能会遇到代码检查错误提示，例如`describe`、`it`为`undefined`。解决方案是在`eslint`配置中添加`jest`环境配置，例如[eslintrc.js](./example/.eslintrc.js)
 
-🍀 每个测试用例的描述要写清楚，可以用中文，不要用`test xxxx`这样的描述。
+🍀 每个测试用例的描述要写清楚，可以用中文，不要用`test xxxx`这种含糊的描述。
 
-🍀 将测试相关命令添加到`package.json`的`scripts`中，使用`npm test`，或`yarn test`执行测试。方便和其他npm或git工作流绑定在一起。比如使用`yarn coverage`一行命令查看测试覆盖率。
+🍀 将测试相关命令添加到`package.json`的`scripts`中，使用`npm test`，或`yarn test`执行测试，这也是很多开源项目默认的测试命令，也方便和其他`npm`或`git`工作流互相调用运行。比如使用`yarn coverage`一行命令运行测试，收集覆盖率，并自动打开覆盖率统计页面。
 
 🍀 在`src`与`__tests__`文件夹中添加相同的目录结构，使用相同的文件名映射源文件与测试文件。
 
@@ -283,21 +321,21 @@ test('test', () => {
 
 🍀 其他各种公共代码，在功能与代码拆分稳定后补全测试。
 
-🍀 业务代码变化快，在编码之初先别着急测试，因为随着页面的搭建结构可能会全部重构。在稳定后，可针对关键业务添加一些测试，或在出现bug后针对bug添加测试。
+🍀 业务代码变化太快，在编码之初先别着急写配套的测试，因为随着页面的搭建结构可能会全部重构。在稳定后，可针对关键业务添加一些测试，或在出现bug后针对bug添加测试。
 
-例如如下伪代码，业务逻辑是部门树允许选择顶级部门，但编码时误添加了属性导致不允许选择顶级部门，后来测试人员发现bug，提交jira后编码修正，并根据该bug补充一个业务逻辑的单元测试。
+  > 例如如下伪代码，业务逻辑是部门树允许选择顶级部门，但编码时误添加了属性导致不允许选择顶级部门，后来测试人员发现bug，提交jira后编码修正，并根据该bug补充一个业务逻辑的单元测试。
 
 <details><summary>伪代码例子</summary>
 
 ```typescript
 import { Department} from 'component/DepartmentTree'
 
-describe('page/PriceCompare', () => {
+describe('page/Pricing', () => {
   const store = {
     department,
   }
   const wrap = () => mount(<Comp />)
-  it('比价搜索的部门选项，应该可以搜索顶级部门', () => {
+  it('搜索的部门选项，应该可以搜索顶级部门', () => {
     const wrapper = wrap()
     const departmentItem = wrapper.find(Department).at(0)
     expect(departmentItem.prop('disallowSelectTopLevel')).toBeFalsy()
@@ -309,15 +347,17 @@ describe('page/PriceCompare', () => {
 
 🍀 将逻辑尽可能移出组件，组件中调用功能。组件的归组件，功能的归功能。
 
+  > 例如样例工程中的复杂查询[complex search src](./example/src/components/ComplexSearch)。此时需要给自己打点鸡血，坚信没有什么逻辑的代码是不能放到组件之外的。
+
 🍀 遵循隔离原则。
 
-  <details><summary>第三方包库是不需要测试的，要本着谁的娃谁自己管的原则。</summary>
+  <details><summary>第三方库是不需要测试的，要本着谁的娃谁自己管的原则。</summary>
 
   ![](./docs/hammer.jpeg)
 
-  单元测试主要针对的是上图中第三行的的行为。
+  单元测试主要针对的是上图中第三行的行为。
 
-  比如使用一个antd的Button组件，按文档要求，只要把我的逻辑函数存放到`onClick`属性上就可以了，这也就是之前提到的，如果找到的第三方库没有配套的测试用例，用着是不踏实的。
+  比如使用一个`antd`的`Button`组件，按文档要求，只要把我的逻辑函数存放到`onClick`属性上就可以了，这也和之前提到的，找到的第三方库如果没有配套的测试用例，用着是不踏实的。
 
   ```javascript
   import { Button } from 'antd'
@@ -331,6 +371,8 @@ describe('page/PriceCompare', () => {
   expect(mount(<MyButton />)).find(Button).prop('onClick').toBe(myFunction)
   ```
 
+  但是也不能盲目的一刀切，只要有问题都赖到第三方库上。一般来说，对于`react`或`vue`这种已经广泛使用的项目来说，基本都是我们自己没有使用正确的打开方式，实在确定自己写的没问题但还是运行错误的话，就需要翻第三方库的源码。确定是人家的问题就去人家的地盘上提`issue`。
+
   </details>
 
 🍀 组件按功能拆分精细化。
@@ -341,7 +383,7 @@ describe('page/PriceCompare', () => {
 
 🍀 无情重构
 
-  > 当确定有更好的实现时，不要被已经写了的大量测试用例所拖累，觉得之前好不容易将覆盖率提升了。果断对老代码断舍离。
+  > 当确定有更好的实现时，不要被已经写了的大量测试用例所拖累，觉得之前好不容易将覆盖率提升了。对老代码要断舍离。
 
 🍀 git工作流搭配(配置过程内容有些多，需要另开一个专题)。
 
@@ -349,9 +391,9 @@ describe('page/PriceCompare', () => {
   >
   > gitlab钩子: 通过与gitlab pipeline结合，配置`gitlab-ci.yml`，并配置gitlab的runner。
 
-## 🌲 技能树比喻
+## 🌲 技能树总结
 
-回想第一张开篇图，在我们的大前端game攻略过程中，测试的技能点需要积累经验值产生新的可分配技能点。
+回想第一张开篇图，在我们的大前端game攻略过程中，测试的技能需要积累经验值，产生新的可分配技能点来点亮。
 
 <details><summary>技能树</summary>
 
@@ -369,13 +411,13 @@ describe('page/PriceCompare', () => {
 
 🌿 找几个自己常用的开源库，`git clone`代码之后看看他们的测试用例，并运行体验结果。
 
-  > 例如：react、vue、redux、mobx、lodash。
+  > 例如：react、vue、redux、mobx、lodash等。
 
 🌿 在一个**周期宽松**的项目中点亮我们的单元测试新技能。
 
   > 这条是通用经验。在每个新项目中只引入一个新概念，例如新框架，新流程，新工具。在一个新项目中引入一个以上的新概念，好比步子跨的太大了一定会扯到蛋。
   >
-  > 先从简单的纯函数入手，逐步培养兴趣。
+  > 先从简单的工具类纯函数入手，逐步培养兴趣。
 
 🌿 现在就开始尝试，不需要再有什么新项目再说的借口。在周期允许的情况下，在老项目上开一个分支，添加测试环境运行看看。
 
@@ -383,8 +425,10 @@ describe('page/PriceCompare', () => {
 
 📖 深入理解`jest`，通读[**官方中文文档**](https://jestjs.io/docs/zh-Hans/getting-started)。
 
-📖 如果使用`enzyme`配合测试`react`，则通读[enzyme官方文档](https://airbnb.io/enzyme/)。也可根据自身判断，不使用`enzyme`而使用`react`提供的官方测试配套工具。vue官方就有对应的测试[配套指南](https://cn.vuejs.org/v2/guide/unit-testing.html)，使用思想与react大同小异。
+📖 如果使用`enzyme`配合测试`react`，则通读[enzyme官方文档](https://airbnb.io/enzyme/)。也可根据自身判断，不使用`enzyme`而使用`react`提供的官方测试配套工具。vue官方就有对应的[测试配套指南](https://cn.vuejs.org/v2/guide/unit-testing.html)，使用思想与react大同小异。
 
 📖 [《编写可测试的JavaScript代码》](https://item.jd.com/10357107991.html)，介绍了代码圈度复杂、纯函数等理论概念，并讲解了一些测试驱动，与代码解耦的方法。
 
-📖 其他还有一些经典的各种编程思想、设计模式一类的玄学书籍，对与提升代码的可测试性，都会有一定程度的加成提升。
+📖 [《JavaScript函数式编程》](https://item.jd.com/11736483.html) 看完这本书之后很长一段时间之后回想起来，自己当时有一些自我膨胀，感觉之前碰到的一些问题都不再是问题，幻想一切都能用且最好都用函数式来实现(还要什么自行车)。经过了一段时间的具体使用，感觉还是因地制宜，适当配合面向对象混合使用比较好。
+
+📖 其他还有一些经典的各种编程思想、设计模式一类的玄学书籍，对于提升代码的可测试性，都会有一定程度的加成提升。
