@@ -257,6 +257,22 @@ test('test', () => {
 
   > 例如[isEmail test](./example/__tests__/utils/isEmail.test.ts)这种，将一系列成功和失败的用例放到一起我认为也是可以的。
 
+🍀 在某一个测试用例上遇到麻烦时，通过添加`only`，使jest仅运行该用例，减少每次的运行时间，在测试完成后记得去掉`only`。`only`在`describe`和`it`上都可以加，也可以加多个。与之相对的是`skip`，添加后可以在运行时跳过相关测试。
+
+  <details><summary>only示例</summary>
+
+  ```typescript
+    describe.only('test xxx', () => {
+      it.only('for feat A', () => {
+        ...
+      })
+    })
+  ```
+
+  </details>
+
+🍀 在编写测试文件时可能会遇到代码检查错误提示，例如`describe`、`it`为`undefined`。解决方案是在`eslint`配置中添加`jest`环境配置，例如[eslintrc.js](./example/.eslintrc.js)
+
 🍀 每个测试用例的描述要写清楚，可以用中文，不要用`test xxxx`这样的描述。
 
 🍀 将测试相关命令添加到`package.json`的`scripts`中，使用`npm test`，或`yarn test`执行测试。方便和其他npm或git工作流绑定在一起。比如使用`yarn coverage`一行命令查看测试覆盖率。
