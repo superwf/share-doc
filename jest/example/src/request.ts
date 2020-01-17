@@ -7,7 +7,10 @@ export const fetchUserList = () => {
   return new Promise(r => {
     setTimeout(
       action(() => {
-        const list = [{ name: 'aaa', age: 1, key: '1' }, { name: 'bbb', age: 2, key: '2' }]
+        const list = [
+          { name: 'aaa', age: 1, key: '1' },
+          { name: 'bbb', age: 2, key: '2' },
+        ]
         user.list = list
         r(list)
       }),

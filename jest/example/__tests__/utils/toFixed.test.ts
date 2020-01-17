@@ -1,7 +1,7 @@
 import { toFixed, PLACEHOLDER } from '../../src/utils/toFixed'
 
 describe('tool/toFixed', () => {
-  it('没有value时返回PLACEHOLDER', () => {
+  it(`没有value时返回: ${PLACEHOLDER}`, () => {
     expect(toFixed()).toBe(PLACEHOLDER)
     expect(toFixed(null)).toBe(PLACEHOLDER)
     expect(toFixed(Number.NaN)).toBe(PLACEHOLDER)

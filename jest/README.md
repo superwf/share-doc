@@ -15,7 +15,7 @@
 
 运行环境，负责把测试跑起来，并在整个测试环境中添加一些全局方法(例如: `describe`、`test`)。
 
-通常使用命令行来运行，也可以通过调用api的方式集成到自定义的脚本中运行。
+通常使用命令行来运行，也可以通过api的方式，通过`const mocha = require('mocha')`这种方式调用，集成到自定义的脚本中运行。
 
 #### 举两个`runner`的例子
 
@@ -75,6 +75,8 @@ test('test', () => {
 直译覆盖，即测试覆盖率统计。自己的代码被测试了多少，有哪些地方没覆盖到呢？
 
   * 著名的[istanbul](https://istanbul.js.org/)，需要与测试runner配合使用。
+
+      > 某些地方是确实需要忽略覆盖率统计的，可以通过`istanbul ignore next`这种类似`eslint-disable`的语法来跳过统计。
 
 ## 🐛误区
 
@@ -309,15 +311,19 @@ test('test', () => {
 
   </details>
 
-🍀 在编写测试文件时可能会遇到代码检查错误提示，例如`describe`、`it`为`undefined`。解决方案是在`eslint`配置中添加`jest`环境配置，例如[eslintrc.js](./example/.eslintrc.js)
+🍀 在编写测试文件时可能会遇到代码检查错误提示，例如`describe`、`it`为`undefined`。解决方案是在`eslint`配置中添加`jest`环境配置，例如[eslintrc.js](./example/__tests__/.eslintrc.js)
+
+  > 利用`eslint`配置文件的继承功能，把针对测试环境的配置放到测试的文件夹`__tests__`中，既可以提示测试中的一些错误，也不会对源码部分造成干扰。
 
 🍀 每个测试用例的描述要写清楚，可以用中文，不要用`test xxxx`这种含糊的描述。
+
+  > `describe/it/test`的第一个参数是个字符串，还可以用字符串模板把需要测试的变量嵌入进去。例如: [toFixed的测试](./example/__tests__/utils/toFixed.test.ts)，返回的测试描述结果也更灵活一些。
 
 🍀 将测试相关命令添加到`package.json`的`scripts`中，使用`npm test`，或`yarn test`执行测试，这也是很多开源项目默认的测试命令，也方便和其他`npm`或`git`工作流互相调用运行。比如使用`yarn coverage`一行命令运行测试，收集覆盖率，并自动打开覆盖率统计页面。
 
 🍀 在`src`与`__tests__`文件夹中添加相同的目录结构，使用相同的文件名映射源文件与测试文件。
 
-🍀 纯函数，测试和代码同步出。也有很多工具函数是在多处写了多次之后提取出来的，也可以在抽象提取时补齐单元测试。
+🍀 理想情况，测试和代码同步出。也有很多工具函数，是在多处写了多次之后提取出来的，在抽象提取时补齐单元测试。
 
 🍀 其他各种公共代码，在功能与代码拆分稳定后补全测试。
 
@@ -342,6 +348,10 @@ describe('page/Pricing', () => {
   })
 })
 ```
+
+原来的流程是 `提bug -> 修正 -> 发布`
+
+新流程是 `提bug -> 补一个对应的单元测试 -> 修正 -> 测试通过并且验证 -> 发布`
 
 </details>
 
@@ -375,7 +385,7 @@ describe('page/Pricing', () => {
 
   </details>
 
-🍀 在单元测试环节，**[不]**发起实际接口请求。
+🍀 在单元测试环节，[**不**]发起实际接口请求。
 
   > 如果用`fetch`，可以用[fetch-mock](https://github.com/wheresrhys/fetch-mock)模拟请求，或者干脆自己模拟一个请求函数，把`fixture`数据用`Promise.resolve(...)`返回即可。
   >
