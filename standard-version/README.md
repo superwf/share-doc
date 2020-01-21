@@ -72,7 +72,7 @@ cd example
 yarn init -y
 ```
 
-<video src="./videos/initExample.ogv" controls="controls"></video>
+<video media-src="./videos/initExample.ogv" controls="controls"></video>
 
 安装:
 
