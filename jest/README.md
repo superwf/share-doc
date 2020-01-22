@@ -256,6 +256,10 @@ test('test', () => {
 
   > 例如[isEmail test](./example/__tests__/utils/isEmail.test.ts)这种，将一系列简单的、只测试一个功能点，且非常类似的断言，放到一个用例里运行我认为也是可以的。
 
+🍀 对一些生成不确定结果的函数，使用可能的结果区间来校验。
+
+  > 例如[randomNumber test](./example/__tests__/utils/randomNumber.test.ts)运行100次，验证结果在预期的区间内。
+
 🍀 在某一个测试用例上遇到麻烦时，通过添加`only`，使jest仅运行该用例，减少每次的运行时间，在测试完成后记得去掉`only`。`only`在`describe`和`it`上都可以加，也可以加多个。与之相对的是`skip`，添加后可以在运行时跳过相关测试。
 
   <details><summary>only示例</summary>
