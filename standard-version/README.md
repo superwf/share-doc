@@ -1,16 +1,78 @@
-# 以git为核心的前端发布工作流
+# 以git提交日志为核心的前端发布工作流
 
-## 起因：需要写发布日志吗？
+## 问题: 需要写发布日志吗？
 
-* 每次发布之后都可能会想起来，好像忘了写发布日志 (︶︹︺)，呵呵，算了就这样吧 ╮(╯▽╰)╭
+* 每次发布之后都可能会想起来，好像忘了写发布日志 (︶︹︺)，呵呵，算了就这样吧 ╮(╯▽╰)╭。
 
-## 使用yarn代替npm
+* 我们需要写发布日志，这个需求可能来自领导，或是自我驱动。
 
-## Part 1: commotlint
+  > 当我们写年终总结的时候，优势突然会觉得，我这一年都干了些神马？
+  >
+  > 大的项目基本是不会忘记的，然后开始按项目回想，在然后到每个项目内部，大部分细节也都忘记了。
 
-### 提交格式
+* 项目有了更新之后，这种更新是否需要及时通知他人？是否将这种更新细节归档，以供之后查询呢？
 
-* git通用提交格式规定如下
+## 由第一个问题带出的另一个问题
+
+```
+                          需要吗？
+                        ／      ＼
+                    不需要       需要
+                    ／              ＼
+              game over             如何写
+                                  ／      ＼
+                          自己随便写      找个规范吧，哪种规范合适呢？
+```
+
+## 概念讲解
+
+### 概念I [semver](https://www.npmjs.com/package/semver) —— 语义版本
+
+`semver`既是一个概念，也是一个npm工具，该工具就是这个概念的程序实现。
+
+我们在安装一个`npm`包之后，会自动写入项目的`package.json`文件中。
+
+<details><summary>比如这样</summary>
+
+```json
+  "prettier": "^1.18.2"
+```
+
+左边的部分是npm包的名字，右边是版本号，一目了然。
+
+下面将详细讲解右边部分的版本号的设计逻辑。
+
+</details>
+
+#### 数字版本号
+
+先不管那个`^`字符，解释一下后面的数字部分`1.18.2`。
+
+这并不是一个数字，其中的`.`不是数学上的小数点，只是起分割符作用。
+
+经过`.`分割之后的三部分分别为，主版本号、次版本号、修订版本号，[参考](https://docs.npmjs.com/about-semantic-versioning)。
+
+ 1.主版本号: 当前程序经过重构，生成了与之前版本不兼容的api，则主版本号升级。例如angular的各个大版本，vue的1、2、3版本。
+
+ 2.次版本号: 也可以叫功能版本号，每次在没有破坏原api调用方法的情况下，扩展了新api或添加了其他新功能，升级的就是次版本号。
+
+ 3.修订版本号: 每次bug修正引起的升级，即升级修正版本号，修订版本号的变化既不会引起api调用的变化，也没有新的扩展功能，对于使用者来说，是可以平滑升级的安全存在。
+
+#### 辅助符号版本号
+
+`辅助符号版本号`这个名字是我自己根据含义起的。文档里叫[Advanced Range Syntax](https://www.npmjs.com/package/semver#advanced-range-syntax)
+
+例如`~1.2.3`，锁定主、副版本号，表示版本可以大于`1.2.3`，但必须小于`1.3.0`。
+
+例如`^1.2.3`，锁定主版本号，表示版本可以大于`1.2.3`，但必须小于`2.0.0`。这也是我们是用`yarn add`或`npm install`时对安装包版本控制的默认行为。
+
+此外还有一些预发版本号，例如`alpha`、`beta`这些在首个稳定版本发布之前的试用版本号，大家可以详细阅读文档。
+
+### 概念II 提交格式
+
+为了配合上面讲述的`semver`，对于`git`的提交描述就有了一系列的详细规则。
+
+我们在使用`git commit`时，需要填写的提交内容，需要符合以下格式。
 
 ```text
   type(scope): subject
@@ -20,107 +82,142 @@
   footer
 ```
 
-### type含义
+其中`scope`, `body`和`footer`可选，`type`和`subject`必填。
 
-scope, body和footer可选，type和subject必填。
+#### type含义
 
-* 针对 type，业界通用的选项如下
+`type`是一个枚举类型，业界通用的选项如下
 
-  feat: 特性
+| 枚举值 | 含义 |
+| ------ | ---- |
+| build | 构建相关的修改 |
+| ci | 持续集成相关的修改 |
+| chore | 其他情况 |
+| docs | 文档 |
+| feat | 特性 |
+| fix | bug修正 |
+| perf | 性能优化 |
+| refactor | 和特性修正无关的重构，例如重命名 |
+| revert | 由于之前的某个错误提交，生成恢复代码的一次提交 |
+| style | 编码风格修改 |
+| test | 测试 |
 
-  build: 构建相关的修改
+[参考 阮一峰教程](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)，其中第四、五部分内容已经过期，已有成型工具，不需要完全手动处理。
 
-  ci: 持续集成相关的修改
+#### 其他部分`subject`、`body`、`footer`是一些补充的详细描述
 
-  fix: bug修正
+根据实际需要填写即可，body部分支持markdown格式。
 
-  docs: 文档
+<details><summary>body写成markdown格式，会更好看</summary>
 
-  style: 编码风格修改
+```
+feat(cli): 添加命令行参数-p
 
-  perf: 性能优化
+* -p后面可以指定一个名称，例如`-p prjectA`
+* -p后面可以指定多个名称，用`,`分割，例如`-p prjectA,projectB`
+```
 
-  refactor: 和特性修正无关的重构，例如重命名
+</details>
 
-  test: 测试
+🍧 以下内容的一个前置小条件: 使用`yarn`代替`npm`。
 
-  revert: 由于上面的某个错误提交，生成恢复代码的一次提交
+## 如何运用
 
-  chore: 不包含在上面选项中的其他情况
+上面讲解了 **semver版本号管理** 与 **git提交规则** 这两个概念之后，他们如何结合使用呢？
 
-  [阮一峰教程](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html) 其中第四、五部分内容已经过期，已有成型工具，不需要完全手动处理
+### 工程示例
 
-  [commitlint参考](https://github.com/conventional-changelog/commitlint)
+#### 先准备示例项目
 
-* ⚠️  注意: 不同的lint规则，可选的type可能稍有不同，以下都以conventional的规则集为规则集进行
-
-### 提交校验工具
-
-* [commitlint](https://www.npmjs.com/package/commitlint) 检测每次提交的格式核心代码。
-
-* [commitlint-cli](https://www.npmjs.com/package/@commitlint/prompt-cli) commitlint的命令行工具。
-
-* [@commitlint/config-conventional](https://www.npmjs.com/package/@commitlint/config-conventional) 一种验证规则集
-  相似的规则集可见[conventional-changelog packages](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages)
-以下都以`conventionalcommits`为默认规则集合
-
-准备示例项目:
+<details><summary>初始化工程<summary>
 
 ```sh
 mkdir example
 cd example
 yarn init -y
+git init
+echo node_modules > .gitignore
 ```
 
-<video media-src="./videos/initExample.ogv" controls="controls"></video>
+![](./media/initExample.apng)
 
-安装:
+</details>
+
+#### 将git提交按上面的提交规范起来
+
+首先需要把我们的`git`提交规范起来。
+
+我一直相信的一个核心思想是，人是靠不住的，必须用工具来统一约束。
+
+对团队如此，对个人也是如此，人的惰性需要靠外置工具来约束。
+
+##### `commitlint`——git提交内容校验工具
+
+* [commitlint](https://www.npmjs.com/package/commitlint) 检测每次提交的格式核心代码包。
+
+* [commitlint-cli](https://www.npmjs.com/package/@commitlint/prompt-cli) `commitlint`的命令行扩展。
+
+  [commitlint配套规则参考](https://github.com/conventional-changelog/commitlint#shared-configuration)
+
+* [@commitlint/config-conventional](https://www.npmjs.com/package/@commitlint/config-conventional) 其中一种我常用的验证规则集，之后的讲解都以该规则集为例。
+
+  > ⚠️  注意: 不同的lint规则，可选的type可能稍有不同，以下都以conventional的规则集为规则集进行
+
+<details><summary>安装`commitlint`系列工具，并添加配置<summary>
+
+安装，并添加配置`commitlint.config.js`，放到项目根目录。
 
 ```sh
 yarn add -D commitlint @commitlint/prompt-cli @commitlint/config-conventional
+echo "module.exports = { extends: ['@commitlint/config-conventional'] }" > commitlint.cnofig.js
 ```
 
-<video src="./videos/installCommitlint.ogv" controls="controls"></video>
+![](/media/installCommintlint.apng)
 
-配置:
-
-`commitlint.config.js`，放到项目根目录
-
-```javascript
-module.exports = { extends: ['@commitlint/config-conventional'] }
-```
-
-<video src="./videos/configCommitlint.ogv" controls="controls"></video>
-
-运行:
-安装并配置完成后，可以用命令实验，会出现规则校验失败的提示
+安装完毕后，用命令实验，会出现规则校验失败的提示。
 
 ```bash
 echo 'xxx: yyy' | npx commitlint
 ```
 
-<video src="./videos/testCommitlintAndFail.ogv" controls="controls"></video>
+![](/media/runCommitlint.apng)
 
-### 辅助工具[commitizen](https://www.npmjs.com/package/commitizen)
+</details>
+
+##### `commitlint`辅助工具[commitizen](https://www.npmjs.com/package/commitizen)
 
 一个命令行下，用交互的方式生成合规的提交格式的工具，对于还不熟悉提交消息格式的人起到自动生成合规消息的作用，可有可无。
-安装过程
+
+* 与`commitizen`配套的规则包`cz-conventional-changelog`。
+
+<details><summary>安装`commitizen`与配套规则，并配置<summary>
 
 ```sh
-yarn add commitizen
-yarn add cz-conventional-changelog
+yarn add commitizen cz-conventional-changelog -D
 echo '{ "path": "cz-conventional-changelog" }' > .czrc
 ```
 
-<video src="./videos/installCommitizen.ogv" controls="controls"></video>
+![](/media/installCommitizen.apng)
+
+</details>
 
 安装完毕之后，即可使用`git-cz`命令代替`git commit`提交。
 
-经过了上面对提交文字的规范，项目的提交记录就已经达到了可以自动生成changelog的标准。
+<details><summary>运行`commitizen`<summary>
 
-<video src="./videos/runCommitizen.ogv" controls="controls"></video>
+```sh
+npx git-cz
+```
 
-## Part 2: git hooks
+![](/media/runCommitizen.apng)
+
+</details>
+
+#### 利用`commitlint`强制校验每次`git`提交
+
+##### 概念 **git hooks**
+
+好比`React`或`Vue`组件的生命周期，在挂载前、后，都可以插入一些自定义行为，在`git`的这个概念上，该行为称为`git hooks`，[参考](https://www.git-scm.com/book/zh/v2/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-Git-%E9%92%A9%E5%AD%90)。`git hooks`又分为**服务端**运行和**本地**运行，以下所讲的全都是**本地**运行`hooks`。
 
 ### 工具
 
@@ -186,6 +283,9 @@ husky配置，在package.json中
 
 * 工具[conventional-changelog-cli](https://www.npmjs.com/package/conventional-changelog-cli)
 
+  相似的规则集可见[conventional-changelog packages](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages)
+以下都以`conventionalcommits`为默认规则集合
+
 安装:
 
 ```sh
@@ -203,15 +303,6 @@ npx conventional-changelog -p conventional -i CHANGELOG.md -s -r 0
 <video src="./videos/runConventionalChangelog.ogv" controls="controls"></video>
 
 conventional-changelog有很多可调整的参数，具体参考[conventional-changelog文档](https://www.npmjs.com/package/conventional-changelog-cli)即可。
-
-* 关于版本号的讲解，一般格式为1.2.3，分为三段，为主版本号，次版本号，修正版本号。
-
-    >>
-      主版本号  当前程序经过重构，生成了与之前版本不兼容的api，则主版本号升级。
-      次版本号  每次新feature的添加，即升级次版本号。
-      修正版本号 每次bug修正引起的升级，即升级修正版本号。
-      在首个稳定版本发布之前，会有试用版标识
-      例如: `2.0.0-beta.1`，`2.0.0-beta.2`等，从beta进化到正式版的第一个版本应为`2.0.0`。
 
 * 每次发布，需要变更版本号，才需要生成changelog，而不是经常随时生成。
 
