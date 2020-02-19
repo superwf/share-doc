@@ -244,7 +244,7 @@ test('test', () => {
   >
   > [complex search test](./example/__tests__/components/ComplexSearch)
   >
-  > 在一个大型的react或vue组件中，有很多方法都会依赖当前组件实例的`this`，因此感觉很难拆分，拆之后`this`不能访问了咋办呢？此时函数式编程思想可以有，关于函数式变成，后面会有推荐阅读。
+  > 在一个大型的react或vue组件中，有很多方法都会依赖当前组件实例的`this`，因此感觉很难拆分，拆之后`this`不能访问了咋办呢？此时函数式编程思想可以有，关于函数式编程，后面会有推荐阅读。
 
 👣 简单的页面结构或数据结构测试，使用`snapshot`。
 
@@ -274,7 +274,7 @@ test('test', () => {
 
   </details>
 
-🍀 各种变量类型或数据都可根据需要`export`出来，测试中也需要避免硬编码。
+🍀 各种变量、类型或数据都可根据需要`export`出来，测试中也需要避免硬编码。
 
   <details><summary>例如之前的`toFixed`例子</summary>
 
@@ -309,13 +309,13 @@ test('test', () => {
     }
   ```
 
-  在ts环境中，这种校验在开发时，就已经避免了，是不必要的。
+  在ts环境中，我才彻底放下了这个包袱。类型校验在开发时就已经避免了。
 
   只有在接收外部数据作为参数的情况下才需要运行时校验类型。例如接收后端接口数据，但该数据类型可能不确定时，才需要添加运行时校验类型的逻辑。
 
   </details>
 
-🍀 在编写测试文件时可能会遇到代码检查错误提示，例如`describe`、`it`为`undefined`。解决方案是在`eslint`配置中添加`jest`环境配置，例如[eslintrc.js](./example/__tests__/.eslintrc.js)
+🍀 在编写测试文件时可能会遇到代码检查错误提示，例如`describe`、`it`为`undefined`。解决方案是在测试文件夹中，通过`eslint`配置的自动扩展功能，添加`jest`环境配置，例如[eslintrc.js](./example/__tests__/.eslintrc.js)
 
   > 利用`eslint`配置文件的继承功能，把针对测试环境的配置放到测试的文件夹`__tests__`中，既可以提示测试中的一些错误，也不会对源码部分造成干扰。
 
@@ -327,35 +327,38 @@ test('test', () => {
 
 🍀 在`src`与`__tests__`文件夹中添加相同的目录结构，使用相同的文件名映射源文件与测试文件。
 
-🍀 理想情况，测试和代码同步出。也有很多工具函数，是在多处写了多次之后提取出来的，在抽象提取时补齐单元测试。
+🍀 理想情况，测试和代码同步出。但实际情况中，很多工具函数，是在多处写了多次之后提取出来的，在抽象提取时在补齐单元测试就成。
 
-🍀 其他各种公共代码，在功能与代码拆分稳定后补全测试。
-
-🍀 业务代码变化太快，在编码之初先别着急写配套的测试，因为随着页面的搭建结构可能会全部重构。在稳定后，可针对关键业务添加一些测试，或在出现bug后针对bug添加测试。
-
-  > 例如如下伪代码，业务逻辑是部门树允许选择顶级部门，但编码时误添加了属性导致不允许选择顶级部门，后来测试人员发现bug，提交jira后编码修正，并根据该bug补充一个业务逻辑的单元测试。
+🍀 业务代码变化太快，在编码之初先别着急写配套的测试，因为随着页面的搭建，会逐步出现可抽象出来的逻辑或组件，一定会发生重构。在重构完比较稳定后，可针对关键业务添加一些测试，或在出现bug后针对bug添加测试。
 
 <details><summary>伪代码例子</summary>
 
-```typescript
-import { Department} from 'component/DepartmentTree'
-
-describe('page/Pricing', () => {
-  const store = {
-    department,
-  }
-  const wrap = () => mount(<Comp />)
-  it('搜索的部门选项，应该可以搜索顶级部门', () => {
-    const wrapper = wrap()
-    const departmentItem = wrapper.find(Department).at(0)
-    expect(departmentItem.prop('disallowSelectTopLevel')).toBeFalsy()
-  })
-})
-```
+例如如下伪代码，业务逻辑是有批量删除的按钮，在table中有选择的数据时可用，没有选中数据时默认为`disabled`。
 
 原来的流程是 `提bug -> 修正 -> 发布`
 
 新流程是 `提bug -> 补一个对应的单元测试 -> 修正 -> 测试通过并且验证 -> 发布`
+
+
+```typescript
+import { Button} from 'antd'
+
+describe('page/User/List', () => {
+  const wrap = () => mount(<Comp />)
+  it('当列表中没有选中的行时，批量删除按钮应为disabled', () => {
+    const wrapper = wrap()
+    let button = wrapper.find(Button).at(0)
+    expect(button.prop('disabled')).toBeTruthy()
+    // 设置选中行id
+    user.list.checkedKeys = [1, 2, 3]
+    wrapper.update()
+    button = wrapper.find(Button).at(0)
+    expect(button.prop('disabled')).toBeFalsy()
+  })
+})
+```
+
+🚨 此处顺便讲一个`enzyme`新手常见的问题。在`react`环境中，组件属性都是层层自动传递的，也会自动更新。但在`enzyme`环境中，需要手动调用`update`方法。然后在`update`之后获取新的实例，而之前的实例里面还是老的`props`值。
 
 </details>
 
@@ -371,7 +374,7 @@ describe('page/Pricing', () => {
 
   单元测试主要针对的是上图中第三行的行为。
 
-  比如使用一个`antd`的`Button`组件，按文档要求，只要把我的逻辑函数存放到`onClick`属性上就可以了，这也和之前提到的，找到的第三方库如果没有配套的测试用例，用着是不踏实的。
+  比如使用一个`antd`的`Button`组件，按`antd`文档要求，只要把我的逻辑函数存放到`onClick`属性上就可以了，至于这个`Button`里面是如何处理这个函数的，里面有如何复杂的dom结构，都不需要深入，否则会陷入无尽的沼泽。
 
   ```javascript
   import { Button } from 'antd'
@@ -400,7 +403,9 @@ describe('page/Pricing', () => {
 
   > 传统的写法，一个页面就是一个组件，随着业务的日趋复杂，页面组件会变成一个个臃肿的庞然大物，动辄几千行。
 
-  > 以[User](./example/src/components/User/index.tsx)组件为例子，搜索，列表组件，数据`store`，请求`request`都被独立出来，在使各个功能变得可以被测试的同时，也产生了清晰的代码分层。
+  > 以原[User](./example/src/components/User/index.old.tsx)组件为反例，在拆分不太好的组件中，通常将很多功能放到了一起。
+
+  > 以重构后的[User](./example/src/components/User/index.old.tsx)组件为例子，将搜索，列表组件，数据`store`，请求`request`都被独立出来，在使各个功能变得可以被测试的同时，也产生了清晰的代码分层。
 
 🍀 无情重构
 
@@ -410,7 +415,7 @@ describe('page/Pricing', () => {
 
   > 本地钩子: 通过`husky`或`yorkie`添加本地git push钩子，推送时本地自动运行测试。
   >
-  > gitlab钩子: 通过与gitlab pipeline结合，配置`gitlab-ci.yml`，并配置gitlab的runner。
+  > `gitlab`钩子: 通过与`gitlab pipeline`结合，配置`gitlab-ci.yml`，并配置`gitlab`的`runner`，在提交后自动运行测试。
 
 ## 🌲 技能树总结
 
