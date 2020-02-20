@@ -15,7 +15,7 @@ describe('logout', () => {
     logout()
     expect(spy).toHaveBeenLastCalledWith(`/api/logout?returnUrl=${encodeURIComponent(location.href)}`)
 
-    /** 退出的时候必须清理对外部环境的更改，否则会影响其他测试 */
+    /** 退出的时候必须还原对外部环境的更改，否则会影响其他测试 */
     Reflect.defineProperty(window, 'location', {
       get() {
         return originLocatoin
