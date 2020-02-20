@@ -6,5 +6,8 @@ module.exports = {
     '^.+\\.(js|jsx|mjs)$': '<rootDir>/node_modules/babel-jest',
   },
   moduleFileExtensions: ['js', 'jsx', 'node', 'ts', 'tsx', 'json'],
-  setupFiles: ['<rootDir>/jest/setup.js'],
+  setupFiles: ['react-app-polyfill/jsdom', '<rootDir>/jest/setup.js'],
+  testEnvironment: 'jest-environment-jsdom-sixteen',
+  setupFilesAfterEnv: ['<rootDir>/jest/afterSetup.js'],
+  testMatch: ['<rootDir>/__tests__/**/*.test.{ts,tsx}'],
 }
