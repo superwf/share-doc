@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.8.3",
-    "jest-environment-jsdom-sixteen": "^1.0.2"
+    "jest-environment-jsdom-sixteen": "^1.0.2",
+    "react-app-polyfill": "^1.0.6"
   }
 }

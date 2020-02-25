@@ -1,3 +1,4 @@
+/** 无输入或解析失败时的占位符 */
 export const PLACEHOLDER = '--'
 
 /**

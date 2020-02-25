@@ -24,10 +24,14 @@ export class SearchWithEvent extends React.Component<IProps> {
     emitter.removeListener('search', this.props.onSubmit)
   }
 
+  private search = () => {
+    emitter.emit('search')
+  }
+
   render() {
     const { onSubmit } = this.props
     return (
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={this.search}>
         <Form.Item>
           <Button htmlType="submit">Search</Button>
         </Form.Item>
