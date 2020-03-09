@@ -13,4 +13,5 @@ test('测试日期校验逻辑正确传入', () => {
   const instance = app.find(ComplexSearch).instance() as ComplexSearch
   expect(datePickers.at(0).prop('disabledDate')).toBe(instance.disabledDateFrom)
   expect(datePickers.at(1).prop('disabledDate')).toBe(instance.disabledDateTo)
+  app.unmount()
 })
