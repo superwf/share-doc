@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 import { Form, DatePicker } from 'antd'
 
 import { ComplexSearch, IProps } from '../../../src/components/ComplexSearch'
-import { disabledDateFrom, disabledDateTo } from '../../../src/components/ComplexSearch/util'
+import { disabledDateFrom, disabledDateTo } from '../../../src/components/ComplexSearch/helper'
 
 test('测试日期校验逻辑正确传入', () => {
   const FormWrapper = Form.create<IProps>()(({ form }) => <ComplexSearch form={form} />)
