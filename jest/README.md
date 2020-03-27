@@ -414,11 +414,17 @@ expect(mount(<MyButton />)).find(Button).prop('onClick').toBe(myFunction)
 
 例如:
 
+> [展示多级部门名称组件例子](./example/src/components/DisplayDepartmentNames.tsx)
+
+> [配套测试](./example/__tests__/components/DisplayDepartmentNames.test.tsx)
+
 ```javascript
 expect(wrapper).toMatchSnapshot() // 该wrapper可以是任何可已被字符串序列化的数据，比如一段html，或可以json化的对象。
 ```
 
 `jest`会在该测试用例文件同目录内建立`__snapshots__`文件夹，用来存放第一次运行时生成的结果。之后的测试都会对比新的结果与之前的是否相同。
+
+> [样例工程中生成的快照](./example/__tests__/components/__snapshots__/DisplayDepartmentNames.test.tsx.snap)。
 
 如果需要更新`snapshot`，运行`jest -u`。
 

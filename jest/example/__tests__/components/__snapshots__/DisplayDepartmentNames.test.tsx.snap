@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component/DisplayDepartmentNames 显示多级部门名称 1`] = `"<div>aaa<br>bbb<br>ccc</div>"`;
