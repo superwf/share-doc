@@ -15,7 +15,9 @@
 
 运行环境，负责把测试跑起来，并在整个测试环境中添加一些全局方法(例如: `describe`、`test`)。
 
-通常使用命令行来运行，例如
+在前端工程化时代之前，测试框架与普通脚本一样，都是通过`<script>`标签加载，直接运行在浏览器中，例如mocha与jasmine。
+
+进入现代化前端开发时代之后，测试工具通常使用命令行来运行，例如
 
 ```bash
 $ mocha // 运行mocha
@@ -62,11 +64,13 @@ const mocha = require('mocha')
 
 * 在nodejs环境中，[assert](https://nodejs.org/api/assert.html)是内置库，无需安装第三方工具。
 
-从根本上说，断言库只是语法糖，完全可以用自己的代码替代。以一个运行结果为`true`的函数的测试举例。
-
-函数名为`isTrue`，应该返回`true`。
+从根本上说，断言库只是语法糖，完全可以用自己的代码替代。举例如下。
 
 ```javascript
+
+// 示例函数
+cosnt isTrue = () => true
+
 // 用断言写
 test('test', () => {
   const assert = require('assert');
