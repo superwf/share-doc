@@ -360,21 +360,21 @@ npx standard-version
 
 ```sh
 收集上一次打tag的version到当前为止是否有feat和fix或BREAKING CHANGE
-                  |
+                  ↓
 if 有BREAKING CHANGE，则自动升级major版本号
-                  |
+                  ↓
 else if 有任何一个feat，则自动升级minor版本号
-                  |
+                  ↓
 else if 有feat，有fix，则自动升级patch版本号
-                  |
+                  ↓
             生成新版本号
-                  |
+                  ↓
 将新版本号写入`package.json`
-                  |
+                  ↓
 自动生成一个内容为`chore(release): x.x.x`的提交
-                  |
+                  ↓
       将最新的提交上添加版本`git tag`，与`pakcage.json`中的一致
-                  |
+                  ↓
 根据收集的提交记录汇总，生成最新`CHANGELOG.md`
 ```
 
