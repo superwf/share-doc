@@ -287,9 +287,9 @@ husky配置，在package.json中
 },
 ```
 
-两个工具都不错，`husky`的错误提示信息可能更好一些
+两个工具都不错，我个人感觉`husky`的错误提示信息可能更好一些。
 
-🐾 必须先将项目纳入git管理，再安装husky/yorkie，否则不会安装git hooks
+🐾 必须先将项目纳入`git`管理，再安装`husky/yorkie`，否则不会安装`git hooks`。
 
 <details><summary>关于`githooks`的补充说明</summary>
 
@@ -431,4 +431,36 @@ else if 有feat，有fix，则自动升级patch版本号
                ↓                                 ↓ 
                ↓                                 ↓ 
           npm publish                         npm publish
+```
+
+最简化工具依赖
+
+```sh
+# 先添加git环境
+git init
+# 安装工具
+yarn add commitlint @commitlint/prompt-cli @commitlint/config-conventional husky standard-version
+```
+
+添加`commitlint`规则配置文件
+
+```sh
+echo "module.exports = { extends: ['@commitlint/config-conventional'] }" > commitlint.config.js
+```
+
+增加配置到`package.json`
+
+```
+{
+  "scripts": {
+    "release": "npx standard-version",
+    "prepublishOnly": "yarn release"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "npx commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}
+
 ```
