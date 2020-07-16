@@ -509,3 +509,15 @@ git tag
 最后添加一些细节，就完成了🍻！
 
 ![](./media/step5.png)
+
+## 事后补充
+
+针对于`monorepo`项目，在执行的时候添加`-t`参数来仅为当前子`package`打`git tag`。
+
+```json
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack",
+    "release": "standard-version -t \"@yourscope/packagename@\"",
+    "prepublishOnly": "yarn build && yarn release"
+  },
+```
