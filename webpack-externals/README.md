@@ -99,3 +99,76 @@ ReactDOM.render(<_button>xxxx</_button>);
 而且这种需要管理的模块肯定不只一个，在多人协作的项目中，这种保持版本一致的工作量就会很大，每次升级都比较痛苦。
 
 此时推荐使用unpkg服务，解决手动上传cdn问题。
+
+`<script src="https://unpkg.com/jquery@3.5.1/dist/jquery.js"></script>`
+
+此处的版本号，需要与我们通过npm安装的，在`package-lock.json`或`yarn.lock`中对应的版本号保持一致。
+
+也可以查看`node_modules/jquery/package.json`，确认当前依赖的jquery版本。
+
+推荐使用插件[html-webpack-inject-externals-plugin](https://www.npmjs.com/package/html-webpack-inject-externals-plugin)，将版本号同步过程自动化，具体使用方法之后再说。
+
+### 3、通过script标签加载模块细节
+
+当我们在加载外部模块时，必须首先确认该模块是支持外部加载的。
+
+比如我们熟知的jquery，加载之后可以通过全局变量`$`来使用。
+
+当我们需要加载`react`时，其对应的全局变量是什么呢？`react`、`React`还是`REACT`或`__REACT__`什么的？这玩意没法猜。
+
+以`react`为例子，这时候我们需要去其对应的包文件夹里去看看，其目录结构为。
+
+```
+node_modules/react
+├── build-info.json
+├── cjs
+│   ├── react.development.js
+│   ├── react-jsx-dev-runtime.development.js
+│   ├── react-jsx-dev-runtime.production.min.js
+│   ├── react-jsx-dev-runtime.profiling.min.js
+│   ├── react-jsx-runtime.development.js
+│   ├── react-jsx-runtime.production.min.js
+│   ├── react-jsx-runtime.profiling.min.js
+│   └── react.production.min.js
+├── index.js
+├── jsx-dev-runtime.js
+├── jsx-runtime.js
+├── LICENSE
+├── node_modules
+├── package.json
+├── README.md
+└── umd
+    ├── react.development.js
+    ├── react.production.min.js
+    └── react.profiling.min.js
+```
+
+其中有几种很明显可用的标志，其中`cjs`文件夹一眼可以看出是`commonjs`的，可以立即排除。
+
+`umd`是前后端通用加载模式，只要看到这种标志，基本确定可用。
+
+这时候去看一下具体的`umd/react.development.js`文件内容。
+
+通过`unpkg`站点可以直接查看，其中最上面的内容大致如下。
+
+```javascript
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (global = global || self, factory(global.React = {}));
+}(this, (function (exports) { 'use strict';
+...
+})))
+```
+
+其中有一个`global.React`这种，可以确定其使用的全局变量为`React`。
+
+之后的步骤是先加载标签`<script src="http://unpkg.jd.com/react@17.0.1/umd/react.development.js"></script>`到我们的html中。
+
+然后打开chrome的控制台，确认一下`React`全局变量已经实际可用，这个实际确认一次的步骤非常必要，因为加载路径，加载模式这些每个模块都有自己的一套，没有太统一的模式。
+
+这里还有一个值得注意的一个地方，我们加载的是`development`后缀的文件，另外还有一个是`production`后缀。
+
+在开发时加载`development`的文件，在生产环境使用最小化文件`production`这点十分必要。
+
+在开发时我们可以得到有用的报错提示，在生产时可以得到最佳性能。
