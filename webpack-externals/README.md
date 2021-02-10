@@ -79,7 +79,31 @@ ReactDOM.render(<_button>xxxx</_button>);
 
 但如果结合了webpack的externals使用，则必须将该插件去掉，否则代码仍然会被打包进来，无法作为外部依赖使用。
 
-### 2、外部依赖版本同步
+### 2、局部文件导入
+
+为了仅引入需要的模块，有如下这种写法
+
+```javascript
+import once from 'lodash/once'
+```
+
+但如果将lodash整体外部载入，则这种导入的写法会导致`once`仍然被编译，无法引用外部全局已存在的`lodash`。
+
+如果确定`lodash`使用外部配置`externals`导入，则应该按常规写法。
+
+```javascript
+import _ from 'lodash'
+
+_.once(...)
+
+// 或
+```
+
+```javascript
+import { once } from 'lodash'
+```
+
+### 3、外部依赖版本同步
 
 当把模块外部化之后，依赖一个外部的url来加载对应的script代码。
 
@@ -172,3 +196,7 @@ node_modules/react
 在开发时加载`development`的文件，在生产环境使用最小化文件`production`这点十分必要。
 
 在开发时我们可以得到有用的报错提示，在生产时可以得到最佳性能。
+
+另外，寻找全局变量名称也最好能在`development`环境的文件里来找，因为`production`就不是给人看的。
+
+这种命名方式不一定是`development`和`production`，也可能使用一个`.min.js`后缀来区分，或一些其他的名称，实际遇到时自己判断一下。
