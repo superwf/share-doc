@@ -22,9 +22,6 @@
   },
   "no-multiple-space-blockquote": true,
   "no-blanks-blockquote": true,
-  "ol-prefix": {
-    "style": "ordered"
-  },
   "list-marker-space": true,
   "blanks-around-fences": true,
   "blanks-around-lists": true,
