@@ -51,6 +51,17 @@
   ]
 ```
 
+### 忽略配置
+
+如同`.gitignore`一样，也有`.eslintignore`，其规则与git的一样，以文件与文件夹为单位进行忽略。
+
+配置支持`glob`规则例如
+
+```txt
+.eslintrc.js
+service/*.js
+```
+
 ## 局部配置
 
 某个文件里只有一处想跳过规则？好我改一下全局配置。
@@ -94,6 +105,7 @@
 ```ecmascript
 /* eslint-disable */
 console.log(xxx)
+console.log(yyy)
 /* eslint-enable */
 ```
 
