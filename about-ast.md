@@ -131,3 +131,11 @@ var foo: number = 'not a number';
 前端环境中的语法树不止包含以上这些工具，还有例如：
 
 `esprima`、`eslint-ast`、`esbuild`、`uglifyjs`、`terser`等
+
+<details><summary>提问时间</summary>
+
+别问，问多了我也不知道
+
+![](http://img.pkdoutu.com/production/uploads/image/2022/01/13/20220113045451_njlcId.jpg)
+
+</details>

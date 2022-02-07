@@ -188,7 +188,7 @@ stopListen()
 
 * 判断输出顺序
 
-```
+```javascript
 document.body.addEventListener('click', () => {
   console.log(1)
 })
