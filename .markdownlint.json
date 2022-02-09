@@ -21,12 +21,12 @@
     "punctuation": ".,;:!"
   },
   "no-multiple-space-blockquote": true,
-  "no-blanks-blockquote": true,
+  "no-blanks-blockquote": false,
   "list-marker-space": true,
   "blanks-around-fences": true,
   "blanks-around-lists": true,
   "no-bare-urls": true,
-  "hr-style": "---",
+  "hr-style": true,
   "no-space-in-emphasis": true,
   "no-space-in-links": true,
   "fenced-code-language": true
