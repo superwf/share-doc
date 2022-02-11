@@ -16,4 +16,4 @@
 
 ## TODO
 
-* [如何写一个健壮的npm包](./publish-a-strong-npm.md)
+* [如何写一个健壮的npm包](./make-a-good-npm.md)
