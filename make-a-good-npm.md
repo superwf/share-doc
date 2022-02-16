@@ -6,7 +6,11 @@
 
 Too young too native, baby 👶!
 
-以下文档讲了一些我在发布过程中遇到的一些问题。
+请容我讲述一些发布过程中踩过的坑。
+
+首先，算了也可以之后再说，我们需要通读`npm`的配置文档。
+
+[package.json doc](https://docs.npmjs.com/cli/v7/configuring-npm/package-json)
 
 ## 通用性👷
 
@@ -28,10 +32,10 @@ Too young too native, baby 👶!
 
 ```json
 {
-  "source": "src/mobx.ts",
+  "source": "src/index.ts",
   "repository": {
       "type": "git",
-      "url": "https://github.com/mobxjs/mobx.git"
+      "url": "https://github.com/yourname/yourproject.git"
   }
 }
 ```
@@ -123,13 +127,15 @@ registry=https://registry.npmjs.org/
 
 其中`module`中的文件推荐使用特定的后缀名，例如`.esm.js`或`.mjs`，但在一些工程相关工具中是否会有未知为题，不好说。
 
+未来已来，现在大部分前端工程工具都会优先使用`module`指定的文件，单如果没有指定`module`，也会为了兼容去加载`main`。
+
 ### 作为前端库
 
 前端库其实要求比后端库更高，为啥？
 
-因为现代前端开发环境要求支持所有后端环境，并延伸出前端环境的额外支持。
+因为现代前端开发环境要求支持所有后端环境，并延伸出前端环境的额外支持。也就是说后端库要求一般是前端库要求的子集。
 
-纯前端运行格式，老格式`amd`已经被淘汰可以不用考虑，现在基本都被`umd`格式统一。
+需要扩展的是纯前端环境的运行格式，老格式`amd`已经被淘汰可以不用考虑，现在基本都被`umd`格式统一。
 
 ```json
 {
@@ -143,9 +149,73 @@ registry=https://registry.npmjs.org/
 
 其中`unpkg`，`umd:main`，`jsdelivr`都是为了更广泛兼容的指向浏览器环境运行的同一个目标别名。
 
-注意浏览器环境输出的都是优化后的`.production.min`格式，为了方便使用者调试方便，也必须同时输出`.development`后缀的开发模式。
+通常来说`commonjs`，`esmodule`，`umd`都不会将其依赖的其他包包括进去，只是在运行时才加载。
 
-### 特定环境
+还有一种情况，可能只有我自己用到过，就是发布包中有些东西与外部环境重复，因此除了这些通用模式之外我又加了一个`independent`(取名叫`standalong`也比较合适)格式，将这个包的所有依赖都封装进去，可以不依赖外部环境独立使用。
+
+例如`mobx-value`的独立运行文件。
+
+[mobx-value independent](https://cdn.jsdelivr.net/npm/mobx-value@1.1.2-rc.1/dist/independent.umd.js)
+
+注意浏览器环境输出的都是优化后的`.production.min`格式，也必须同时输出`.development`后缀的开发模式，为了方便使用者调试方便。
+
+因为最大的使用者，往往就是我们自己，别连自己都懒得糊弄了~
+
+### 作为命令行工具
+
+#### 多配置兼容
+
+命令行工具一般需要很多参数，例如`tsc`，当参数过多时没人愿意每次都输入长长的参数，因此需要配置文件的支持。
+
+那么选哪种配置格式呢？
+
+此时[cosmiconfig](https://www.npmjs.com/package/cosmiconfig)隆重登场！以一句名言形容，小孩子才做选择，成年人全都要！
+
+兼容各种配置，各种位置，详情参见其`api`。
+
+还有一点，如果需要读取一些周边的`json`配置，不要用原生的`JSON.parse`，很多`json`是带注释的或者编写不规范，用`json5`读取兼容好。
+
+还有一个精简版：[lilconfig](https://www.npmjs.com/package/lilconfig)，功能差不多，我下次打算试试。
+
+#### 配置文件校验
+
+我们的程序要读配置，但配置是使用者提供的，谁知道用户会写些什么，这时候校验就是必备环节。
+
+不光是校验不通过时终止运行，还必须给出一个合理且精准的错误提示。
+
+推荐一个协议、两个校验工具与一个漂亮的格式化提示工具。
+
+协议是`json schema`，校验工具为`joi`或`ajv`，提示输出工具为`chalk`。
+
+#### 指定可运行文件
+
+在`package.json`中指定`bin`：
+
+```json
+{
+  "bin": "bin/run.js"
+}
+```
+
+对于大部分js脚本，都要在运行文件头部指定运行环境。
+
+```sh
+#! /usr/bin/env node
+```
+
+然后别忘了在发布前添加可执行属性，最好整合在自动化发布脚本中。
+
+```sh
+chmod +x bin/run.js
+```
+
+#### 可调用api
+
+例如`babel`，我们不光能使用`@babel/cli`在命令行使用，也可以在自己的程序里`import babel from 'babel'`来调用其`api`。
+
+一个命令行工具通常也是一个第三方库，方便集成到调用者自身的脚本与环境中。
+
+### 其他特定环境
 
 例如针对`react-native`，这个我就见过，没实际用过。
 
@@ -155,19 +225,21 @@ registry=https://registry.npmjs.org/
 }
 ```
 
+最后不论什么格式，都记得输出配套`sourcemap`的`.map`文件。
+
 ## 健壮性🏋
 
 ### 有否配套测试用例
 
 * 有可运行的配套测试用例。
 
-* 在主页上有可见的测试覆盖率统计，让人可以放心使用。
+* 在`README.md`上有可见的测试覆盖率统计，让人可以放心使用。
 
 ## 推广性🤹
 
 ### 文档
 
-使用`.markdownlint`规范自己的`markdown`文档，否则很容易写飞了。
+使用`.markdownlint`配置规范自己的`markdown`文档，否则很容易写飞了。
 
 ### 配套用例
 
@@ -179,6 +251,8 @@ registry=https://registry.npmjs.org/
 
 ### 有否自动化版本管理
 
-* 使用`husky`等规范提交日志。
+Why？因为版本号与兼容性是强相关的，具体参考`semver`规范。
+
+* 使用`husky`/`yorkie`等规范提交日志。
 
 * 使用`standard-version`等自动生成`CHANGELOG`并根据规则自动提升版本号。
