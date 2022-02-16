@@ -8,7 +8,7 @@ Too young too native, baby 👶!
 
 请容我讲述一些发布过程中踩过的坑。
 
-首先，算了也可以之后再说，我们需要通读`npm`的配置文档。
+首先，算了也可以之后有空再说，我们需要通读`npm`的配置文档。
 
 [package.json doc](https://docs.npmjs.com/cli/v7/configuring-npm/package-json)
 
@@ -229,6 +229,17 @@ chmod +x bin/run.js
 
 ## 健壮性🏋
 
+### 指定运行环境：engine与os
+
+尤其对于命令行工具，这俩点很重要，不然很容易就换个人换个电脑就莫名报错。
+
+```json
+{
+  "engine": "node>=14",
+  "os": ["linux", "darwin"]
+}
+```
+
 ### 有否配套测试用例
 
 * 有可运行的配套测试用例。
@@ -240,6 +251,8 @@ chmod +x bin/run.js
 ### 文档
 
 使用`.markdownlint`配置规范自己的`markdown`文档，否则很容易写飞了。
+
+否则一看文档，项目质量很容易就露馅了不是🤭
 
 ### 配套用例
 
@@ -256,3 +269,7 @@ Why？因为版本号与兼容性是强相关的，具体参考`semver`规范。
 * 使用`husky`/`yorkie`等规范提交日志。
 
 * 使用`standard-version`等自动生成`CHANGELOG`并根据规则自动提升版本号。
+
+## 最后留个作业
+
+当我们再一次运行`npm publish`，脑编译一下，想想这期间都发生了些什么，还少些什么？
