@@ -177,9 +177,29 @@ registry=https://registry.npmjs.org/
 
 还有一个精简版：[lilconfig](https://www.npmjs.com/package/lilconfig)，功能差不多，我下次打算试试。
 
-#### 配置文件校验
+#### 配置文件类型校验
 
-我们的程序要读配置，但配置是使用者提供的，谁知道用户会写些什么，这时候校验就是必备环节。
+刚入门`typescript`时，我尝试用`typescript`作为配置文件，然后在运行s时利用类型机制达到校验配置的目的。
+
+但这样会丢失很多灵活性，限制死了配置文件的来源与格式，并由于库的`typescript`环境与应用所在的`typescript`环境不一致，也导致了很多工程问题(我说的就是`ts-gear`)。
+
+后来发现通过注释文档的方式，`js`文件中也同样可以校验类型，而且`js`文件对运行时更友好。
+
+例如`webpack.config.js`这样配置
+
+```ecmascript
+/**
+ * @type {import('webpack').Configuration}
+ * */
+const config = {...}
+export default config
+```
+
+#### 配置文件运行时校验
+
+我们的程序要读配置，但配置是使用者提供的，谁知道用户会写些什么，即使有上面那步提到的类型校验把关，也会有很多边界问题类型根本管不了。
+
+因此，运行时配置数据校验就是必备环节。
 
 不光是校验不通过时终止运行，还必须给出一个合理且精准的错误提示。
 
