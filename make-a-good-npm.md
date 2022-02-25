@@ -24,9 +24,9 @@ Too young too native, baby 👶!
 }
 ```
 
-若不指定`files`，每次发布会把所有不以`.`开头的文件都发布出去，导致发布体积过大。
+若不指定`files`，每次发布会把所有不以`.`开头的文件都发布出去，导致发布体积过大（`node_modules`默认也不会被发布）。
 
-`README.md`作为主文档，加不加都会发布。
+`README.md`作为主文档，加不加都会发布，`package.json`也是。
 
 ### 指定源代码
 
@@ -44,7 +44,7 @@ Too young too native, baby 👶!
 
 如果仓库是内部仓库或私人仓库并不对外，则`source`字段就有用了，将源代码发布后可让人帮忙`debug`找问题。
 
-注意如果有`source`，则`files`也要加上`souce`对应的文件。
+注意如果有`source`，则`files`也要加上`souce`对应的文件或文件夹。
 
 ### 发布`sourcemap`
 
@@ -105,13 +105,27 @@ registry=https://registry.npmjs.org/
 }
 ```
 
+我一般会用一个专用的`tsconfig.declaration.json`来专门生成类型：
+
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "outDir": "types"
+  }
+}
+```
+
 ### 作为后端库
 
 `package.json`中指定`main`字段。
 
 编译结果需要在`nodejs`环境中运行，输出`commonjs`格式模块。
 
-为了兼容最新与将来，同事也要输出`esmodule`格式模块。
+为了兼容最新与将来，同时也要输出`esmodule`格式模块。
 
 相关配置：
 
@@ -123,7 +137,7 @@ registry=https://registry.npmjs.org/
 }
 ```
 
-`module`与`jsnext:main`都是指`esmodule`格式，只是为了兼容某些特殊环境的别名。可能还有其他别名我暂时就见过这俩。
+`module`与`jsnext:main`都是指`esmodule`格式，只是为了兼容某些特殊环境的别名。可能还有其他别名单我暂时就见过这俩。
 
 其中`module`中的文件推荐使用特定的后缀名，例如`.esm.js`或`.mjs`，但在一些工程相关工具中是否会有未知为题，不好说。
 
@@ -151,7 +165,7 @@ registry=https://registry.npmjs.org/
 
 通常来说`commonjs`，`esmodule`，`umd`都不会将其依赖的其他包包括进去，只是在运行时才加载。
 
-还有一种情况，可能只有我自己用到过，就是发布包中有些东西与外部环境重复，因此除了这些通用模式之外我又加了一个`independent`(取名叫`standalong`也比较合适)格式，将这个包的所有依赖都封装进去，可以不依赖外部环境独立使用。
+还有一种情况，可能只有我自己用到过，就是发布包中有些东西与外部环境有冲突，因此除了这些通用模式之外我又加了一个`independent`(取名叫`standalong`也比较合适)格式，将这个包的所有依赖都封装进去，可以不依赖外部环境独立使用。
 
 例如`mobx-value`的独立运行文件。
 
@@ -159,7 +173,7 @@ registry=https://registry.npmjs.org/
 
 注意浏览器环境输出的都是优化后的`.production.min`格式，也必须同时输出`.development`后缀的开发模式，为了方便使用者调试方便。
 
-因为最大的使用者，往往就是我们自己，别连自己都懒得糊弄了~
+因为最大的使用者，往往就是我们自己，不要连自己都糊弄了事~
 
 ### 作为命令行工具
 
@@ -272,7 +286,7 @@ chmod +x bin/run.js
 
 使用`.markdownlint`配置规范自己的`markdown`文档，否则很容易写飞了。
 
-否则一看文档，项目质量很容易就露馅了不是🤭
+要不人家一看文档，项目质量很容易就露馅了不是🤭
 
 ### 配套用例
 
@@ -292,4 +306,6 @@ Why？因为版本号与兼容性是强相关的，具体参考`semver`规范。
 
 ## 最后留个作业
 
-当我们再一次运行`npm publish`，脑编译一下，想想这期间都发生了些什么，还少些什么？
+* 你有什么`npm`发布时的关键经验这里没提到的，帮我补充下🤝
+
+* 当我们再一次运行`npm publish`，脑编译一下，想想这期间都发生了些什么，还少些什么？
