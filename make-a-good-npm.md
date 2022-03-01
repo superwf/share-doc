@@ -2,7 +2,7 @@
 
 ## 无脑发布 npm
 
-用`npm init`新建一个包，改把改把，然后来个`npm publish`，so easy ✌️!
+比如老王我，用`npm init`新建一个包，改把改把，然后来个`npm publish`，so easy ✌️!
 
 Too young too native, baby 👶!
 
@@ -34,8 +34,8 @@ Too young too native, baby 👶!
 {
   "source": "src/index.ts",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/yourname/yourproject.git"
+    "type": "git",
+    "url": "https://github.com/yourname/yourproject.git"
   }
 }
 ```
@@ -63,6 +63,16 @@ Too young too native, baby 👶!
 ```text
 registry=https://registry.npmjs.org/
 ```
+
+### 精确指定`dependencies`、`devDependencies`、`peerDependencies`
+
+`dependencies`要尽量少，只有在运行时确实用到才放进去。
+
+依赖的版本号要清晰指明，如`"react": "16.x || 17.x"`
+
+否则，如果指定了`"react": "17.0.0"`，则在使用了`react` 16的项目中，会引入两份`react`，造成一些莫名其妙的问题。
+
+这种情况，`react`应放到`peerDependencies`中。
 
 ### 指定发布目标
 
