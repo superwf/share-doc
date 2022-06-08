@@ -14,6 +14,10 @@
 
 * [eslint配置(茴香豆的茴有几种写法)](./eslint-config.md)
 
+* [如何写一个健壮的npm包](./make-a-good-npm.md)
+
 ## TODO
 
-* [如何写一个健壮的npm包](./make-a-good-npm.md)
+* [关于路径别名的一切](./about-path-alias.md)
+
+* [webpack的fast refresh](./webpack-fast-refresh.md)
