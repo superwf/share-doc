@@ -179,7 +179,7 @@ registry=https://registry.npmjs.org/
 
 例如`mobx-value`的独立运行文件。
 
-[mobx-value independent](https://cdn.jsdelivr.net/npm/mobx-value@1.1.2-rc.1/dist/independent.umd.js)
+[mobx-value standalone](https://cdn.jsdelivr.net/npm/mobx-value@1.7.0/dist/standalone.js)
 
 注意浏览器环境输出的都是优化后的`.production.min`格式，也必须同时输出`.development`后缀的开发模式，为了方便使用者调试方便。
 
@@ -202,6 +202,14 @@ registry=https://registry.npmjs.org/
 还有一点，如果需要读取一些周边的`json`配置，不要用原生的`JSON.parse`，很多`json`是带注释的或者编写不规范，用`json5`读取兼容好。
 
 还有一个精简版：[lilconfig](https://www.npmjs.com/package/lilconfig)，功能差不多，我下次打算试试。
+
+### 减肥小型化
+
+此处说的减肥，并不是代码压缩或`tree shake`，而是外部依赖库的重新选型。
+
+例如有些前端组件库，仅需要用到一两个`antd`之类的组件，结果打包出来，我自己的源码只占几K，外部库占一百多K。
+
+为了更高的通用性与代码缩减，可以考虑`headlessui`这种东西，然后只配套上需要的少量`css`，做到最大限度精简。
 
 #### 配置文件类型校验
 
