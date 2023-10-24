@@ -16,6 +16,8 @@
 
 * [如何写一个健壮的npm包](./make-a-good-npm.md)
 
+* [前端表单类型约束](./form-type.md)
+
 ## TODO
 
 * [关于路径别名的一切](./about-path-alias.md)
