@@ -141,7 +141,6 @@ const RuleFormItem = Form.Item as React.FC<
 ### 泛型抽象
 
 ```typescript
-/** 将表单的name作为强类型校验约束 */
 export type TypedFormItem<T> = React.FC<
   Omit<FormItemProps, 'name'> & {
     name: T
@@ -154,3 +153,5 @@ export type TypedFormItem<T> = React.FC<
 ```typescript
 const RuleFormItem = Form.Item as TypedFormItem<keyof FormValue>
 ```
+
+🎉🎊 恭喜，现在你的表单已经被类型完整的保护了。
