@@ -1,14 +1,12 @@
-# 基于antd表单的类型约束
-
 ## 概述
 
-大多数情况接口数据类型与表单提交数据类型虽然大部分属性名称与类型是相同的，但很少能做到完全统一。
+接口数据类型与表单提交数据类型，在大多数情况下，大部分属性的类型是相同的，但很少能做到完全统一。
 
-我在之前的工作中经常为了方便，直接使用接口数据类型代替表单数据类型，在遇到不统一的情况时会使用`any`强制忽略类型校验。
+我在之前的工作中经常为了方便，直接将接口数据类型复用为表单内数据类型，在遇到属性类型不一致的情况时会使用`any`强制忽略类型错误。
 
-后来经过自省与思考，我认为这中过度使用`any`的习惯，会引起各种隐藏bug，应该被修正！
+后来经过自省与思考，这种工作模式会引起各种隐藏bug，一定有更好的工程解决方案。
 
-因此为表单提交数据 **单独** 定义类型就非常必要。
+我的答案就是：为表单提交数据 **单独** 定义类型！
 
 ## 类型解说
 
@@ -19,9 +17,9 @@
 ```typescript
 type RequestBody = {
    name?: string
-   id?: number
+   count?: number
    groupIds?: number[]
-   startDateFrom?: string // YYYY-MM-DD
+   startDate?: string // YYYY-MM-DD
 }
 ```
 
@@ -30,16 +28,16 @@ type RequestBody = {
 ```typescript
 type FormValue = {
   name?: string
-  id?: number
+  count?: number
   groupIds?: string
-  startDateFrom?: Moment
+  startDate?: Moment
 }
 ```
 
 有了该类型，我们可以方便的将该类型使用在表单实例上
 
 ```typescript
-const [form] = Form.useForm<FormValue>()
+const [form] = Form.useForm< FormValue >()
 ```
 
 #### 类型复用优化
@@ -49,9 +47,9 @@ const [form] = Form.useForm<FormValue>()
 大多数情况是可以复用一些接口的属性到表单的数据类型中，例如上面的两个数据结构，其中 name、id 属性是相同的，则FormValue 可以优化为
 
 ```typescript
-type FormValue = Pick<RequestBody, 'name' | 'id'> {
+type FormValue = Pick< RequestBody, 'name' | 'count' > {
   groupIds?: string
-  startDateFrom?: Moment
+  startDate?: Moment
 }
 ```
 
@@ -61,7 +59,7 @@ type FormValue = Pick<RequestBody, 'name' | 'id'> {
 
 ```typescript
 const FormItem = Form.Item as React.FC<
-  Omit<FormItemProps, 'name'> & {
+  Omit< FormItemProps, 'name' > & {
     name: keyof FormValue
   }
 >
@@ -69,8 +67,8 @@ const FormItem = Form.Item as React.FC<
 
 应用该约束组件
 
-```typescript
-<FormItem label="名称" name="name"> ...
+```tsx
+< FormItem label="名称" name="name" > ...
 ```
 
 ### 数据转换
@@ -83,7 +81,7 @@ const formValueToRquestBody = (values: FormValue): RequestBody => {
     name: values.name,
     id: values.id,
     groupIds: values.groupIds.split(',').map(n => Number(n)),
-    startDateFrom: values.startDateFrom?.format('YYYY-MM-DD'),
+    startDate: values.startDate?.format('YYYY-MM-DD'),
   }
 }
 ```
@@ -107,7 +105,7 @@ type FormValue = {
 表单中关于rule 的写法为：
 
 ```typescript
-<Form.Item name={['rule', 'min']}>
+< Form.Item name={['rule', 'min']}>
 ```
 
 这种情况下，`name`不再是简单的字符串，应该如何用类型约束？
@@ -124,7 +122,7 @@ type FormValue = {
 import type { FormItemProps } from 'antd'
 
 const RuleFormItem = Form.Item as React.FC<
-  Omit<FormItemProps, 'name'> & {
+  Omit< FormItemProps, 'name'> & {
     name: ['rule', keyof FormValue['rule']]
   }
 >
@@ -133,7 +131,7 @@ const RuleFormItem = Form.Item as React.FC<
 调用时
 
 ```typescript
-<RuleFormItem label="min" name={['rule', 'min']}> ...
+< RuleFormItem label="min" name={['rule', 'min']}> ...
 ```
 
 此时数组中的 rule 与 min 都能收到类型的保护。
@@ -141,8 +139,8 @@ const RuleFormItem = Form.Item as React.FC<
 ### 泛型抽象
 
 ```typescript
-export type TypedFormItem<T> = React.FC<
-  Omit<FormItemProps, 'name'> & {
+export type TypedFormItem< T > = React.FC<
+  Omit< FormItemProps, 'name' > & {
     name: T
   }
 >
@@ -151,7 +149,7 @@ export type TypedFormItem<T> = React.FC<
 #### 应用泛型
 
 ```typescript
-const RuleFormItem = Form.Item as TypedFormItem<keyof FormValue>
+const RuleFormItem = Form.Item as TypedFormItem< keyof FormValue >
 ```
 
 🎉🎊 恭喜，现在你的表单已经被类型完整的保护了。
